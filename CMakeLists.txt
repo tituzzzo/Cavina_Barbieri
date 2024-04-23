@@ -38,7 +38,7 @@ endif()
 
 
 
-add_executable(my_target main.cpp)
+add_executable(my_target main.cpp bird.cpp flock.cpp vector3d.cpp)
 target_link_libraries(my_target PUBLIC matplot)
 
 
