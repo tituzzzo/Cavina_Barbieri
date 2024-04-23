@@ -24,6 +24,7 @@ int main()
 
   scatter3(x, y, z, "~");
   view(-30, 10);
+  aaaaaaaaaaaaaaaaaaaaaaaa
 
   show();
   return 0;
