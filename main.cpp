@@ -10,7 +10,7 @@ int main()
 
   scatter3(x, y, z, "~");
   view(-30, 10);
-
+ciao
   show();
   return 0;
 }
