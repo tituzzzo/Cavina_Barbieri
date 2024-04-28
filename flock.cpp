@@ -19,5 +19,6 @@ auto Flock::spawn_birds(int n_birds)
     Vector3D position{i * 0.1, i * 0.1, i * 0.1};
     Bird* bird_ptr = new Bird(position);
     birds.push_back(bird_ptr);
+    //finisce lo scope ma birds rimangono sullo heap
   }
 }
