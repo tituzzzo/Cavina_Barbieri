@@ -6,5 +6,5 @@ class Bird
   Vector3D position;
 
  public:
-  Bird(Vector3D);
+  Bird(Vector3D const& position_);
 };

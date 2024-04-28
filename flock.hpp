@@ -7,6 +7,6 @@ class Flock
   std::vector<Bird*> birds;
   Flock();
 
-  auto calculate_mass_center();
-  auto spawn_birds(int);
+  auto calculate_mass_center(); //quale tipo di ritorno? non si può usare auto in una dichiarazione
+  void spawn_birds(int);
 };
