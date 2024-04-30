@@ -3,8 +3,11 @@
 class Bird
 {
  private:
-  Vector3D position;
+  Vector3D position_;
+  Vector3D velocity_;
+  int index_;
 
  public:
-  Bird(Vector3D const& position_);
+  Bird(int index, Vector3D const& position);
+  
 };

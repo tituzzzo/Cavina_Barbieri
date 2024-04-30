@@ -60,3 +60,6 @@ gh-md-toc
 *.out
 *.app
 
+# Output files
+img
+
