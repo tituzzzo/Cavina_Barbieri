@@ -1,13 +1,29 @@
 #include "bird.hpp"
 #include <vector>
 
+#include "statistics.hpp"
+
 class Flock
 {
-  Vector3D mass_center;
+ private:
+  double d;
+  double d_s;
+  float a;
+  float c;
+  float s;
+  Statistics average_velocity;
+  Statistics average_bird_to_bird_distance;
   std::vector<Bird*> birds;
-  Flock();
-
-  auto calculate_mass_center(); //quale tipo di ritorno? non si può usare auto in una dichiarazione
   void spawn_birds(int);
-  Vector3D& calc_bird_velocity(int bird_index, Vector3D& bird_velocity);
+ 
+  void calc_average_velocity();
+  void calc_average_bird_to_bird_distance();
+  void find_birds_at_distance(double dinstance, std::vector<Bird>& birds_within_distance);
+  void calc_bird_velocity(Vector3D& bird_velocity);
+
+ public:
+  Flock();
+  
+
+
 };

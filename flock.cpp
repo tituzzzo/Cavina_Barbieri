@@ -1,4 +1,5 @@
 #include "flock.hpp"
+#include <cmath>
 
 Flock::Flock()
 {
@@ -8,33 +9,48 @@ Flock::Flock()
   // init center_mass
 }
 
-auto Flock::calculate_mass_center()
-{
-  // calc
-}
-
 void Flock::spawn_birds(int n_birds)
 {
   for (int i = 0; i < n_birds; ++i) {
     Vector3D position{i * 0.1, i * 0.1, i * 0.1};
-    Bird* bird_ptr = new Bird(i, position);
+    Bird* bird_ptr = new Bird(position);
     birds.push_back(bird_ptr);
-    //finisce lo scope ma birds rimangono sullo heap
+    // finisce lo scope ma birds rimangono sullo heap
   }
 }
 
-Vector3D& Flock::calc_bird_velocity(int bird_index, Vector3D& bird_velocity)
+void Flock::calc_bird_velocity(Vector3D& bird_velocity)
 {
-  Bird* bird_ptr = birds[bird_index];
-  /*for (Bird* i : birds)
-  {
-    if(*i->index_ != bird_index)
-    {
+  
+}
 
-    }
+void Flock::calc_average_velocity()
+{
+  const int N{static_cast<int>(birds.size())};
+
+  /*
+  if (N < 2) {
+    throw std::runtime_error{"Not enough entries to run a statistics"};
   }
   */
-  
-  return bird_velocity;
+
+  double sum_x{};
+  double sum_x2{};
+
+  for (auto const& bird : birds) {
+    double bird_velocity = (bird->get_velocity().norm());
+    sum_x += bird_velocity;
+    sum_x2 += pow(bird_velocity, 2);
+  }
+
+  average_velocity.mean_     = sum_x / N;
+  average_velocity.sigma_    = std::sqrt((sum_x2 - N * pow(average_velocity.mean_, 2)) / (N - 1));
+  average_velocity.mean_err_ = average_velocity.sigma_ / std::sqrt(N);
+
 }
 
+
+  void Flock::calc_average_bird_to_bird_distance()
+  {
+
+  }

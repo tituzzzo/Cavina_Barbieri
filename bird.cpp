@@ -1,8 +1,25 @@
 #include "bird.hpp"
 #include <random>
 
-Bird::Bird(int index, Vector3D const& position) : index_{index}, position_{position}
+Bird::Bird(Vector3D const& position)
+    : position_{position}
 {
-    //position_ = position;
-    //exceptions
+  // class invariant posizione nella box
+}
+
+Vector3D const& Bird::get_position()
+{
+  return position_;
+}
+void Bird::set_position(Vector3D& new_position)
+{
+  position_ = new_position;
+}
+Vector3D const& Bird::get_velocity()
+{
+  return velocity_;
+}
+void Bird::set_velocity(Vector3D& new_velocity)
+{
+  velocity_ = new_velocity;
 }
