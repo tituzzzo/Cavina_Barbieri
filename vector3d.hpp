@@ -6,4 +6,5 @@ struct Vector3D
 
     Vector3D& operator+=(const Vector3D&);
     double norm() const;
+    Vector3D operator-(const Vector3D& v) const;
 };

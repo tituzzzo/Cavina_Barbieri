@@ -18,9 +18,10 @@ class Flock
 
   void calc_average_velocity();
   void calc_average_bird_to_bird_distance();
-  void find_birds_at_distance(double dinstance, std::vector<Bird>& birds_within_distance);
-  void calc_bird_velocity(Vector3D& bird_velocity);
+  void find_birds_within_distance(double distance, Bird& reference_bird) const;
+  
 
  public:
   Flock();
 };
+double calc_bird_to_bird_distance(const Bird& bird1, const Bird& bird2);

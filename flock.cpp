@@ -13,13 +13,10 @@ void Flock::spawn_birds(int n_birds)
 {
   for (int i = 0; i < n_birds; ++i) {
     Vector3D position{i * 0.1, i * 0.1, i * 0.1};
-    Bird bird = Bird(position);
+    Bird bird = Bird(position, i);
     birds.push_back(bird);
   }
 }
-
-void Flock::calc_bird_velocity(Vector3D& bird_velocity)
-{}
 
 void Flock::calc_average_velocity()
 {
@@ -48,3 +45,25 @@ void Flock::calc_average_velocity()
 
 void Flock::calc_average_bird_to_bird_distance()
 {}
+
+double calc_bird_to_bird_distance(const Bird& bird1, const Bird& bird2)
+{
+  Vector3D difference{bird1.get_position() - bird2.get_position()};
+  double distance{};
+  distance = difference.norm();
+  return distance;
+};
+
+void Flock::find_birds_within_distance(double distance, Bird& reference_bird) const
+{
+  std::vector<Bird> provvisory_birds_within_distance{};
+  for (const Bird& bird : birds){
+    if (calc_bird_to_bird_distance(reference_bird, bird) <= distance && bird != reference_bird)
+    {
+      //-------------------------------------------------------
+    }
+    
+  }
+}
+
+
