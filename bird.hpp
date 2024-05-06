@@ -16,7 +16,6 @@ class Bird
   void set_position(Vector3D&);
   Vector3D const& get_velocity();
   void set_velocity(Vector3D&);
-  
 };
 
 

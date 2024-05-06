@@ -9,7 +9,7 @@ int main()
   using namespace matplot;
 
   double delta = 0.1;
-  for (int i = 0; i <= 7; ++i) {
+  for (int i = 0; i <= 300; ++i) {
     clock_t inizio = clock();
     auto z         = {1. + i * delta, 1.1 + i * delta, .1, 4. + i * delta};
     auto x         = {1, 2, 3, 4};
@@ -25,7 +25,7 @@ int main()
       /* code */ file += "1";
     }
 
-    save(file, "jpeg");
+    //save(file, "jpeg");
     // std::this_thread::sleep_for(std::chrono::nanoseconds(200000000));
   }
 
