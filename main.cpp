@@ -25,7 +25,7 @@ int main()
       /* code */ file += "1";
     }
 
-    save(file, "png"); //png pesa meno,meglio usarlo
+    //save(file, "png"); //png pesa meno,meglio usarlo
     // std::this_thread::sleep_for(std::chrono::nanoseconds(200000000));
   }
 

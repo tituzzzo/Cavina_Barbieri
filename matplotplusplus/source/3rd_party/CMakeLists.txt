@@ -40,6 +40,9 @@ else()
   endif ()
 endif()
 
+target_compile_options(nodesoup PRIVATE "-w")
+
+
 # Install (only necessary for static lib build)
 if(MASTER_PROJECT AND NOT BUILD_SHARED_LIBS)
   install(TARGETS nodesoup

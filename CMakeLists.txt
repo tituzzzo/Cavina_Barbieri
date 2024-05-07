@@ -39,7 +39,7 @@ if (BUILD_TESTING)
 
 endif()
 
-add_executable(my_target main.cpp bird.cpp flock.cpp vector3d.cpp)
-target_link_libraries(my_target PRIVATE matplot)
+add_executable(flock_simulation main.cpp bird.cpp flock.cpp vector3d.cpp)
+target_link_libraries(flock_simulation PRIVATE matplot)
 
 
