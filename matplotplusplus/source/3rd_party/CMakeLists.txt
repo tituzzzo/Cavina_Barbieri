@@ -76,6 +76,16 @@ if(JPEG_FOUND)
   target_include_directories(cimg INTERFACE ${JPEG_INCLUDE_DIRS})
 endif()
 
+find_package(ZLIB)
+if(ZLIB_FOUND)
+  find_package(PNG)
+  if (PNG_FOUND)
+    target_compile_definitions(cimg INTERFACE cimg_use_zlib cimg_use_png)
+    target_include_directories(cimg INTERFACE ${ZLIB_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS})
+    target_link_libraries(cimg INTERFACE ${ZLIB_LIBRARIES} ${PNG_LIBRARIES})
+  endif ()
+endif()
+
 #Optional package
 
 #[[
@@ -86,15 +96,7 @@ if(TIFF_FOUND)
   target_include_directories(cimg INTERFACE ${TIFF_INCLUDE_DIRS})
 endif()
 
-find_package(ZLIB)
-if(ZLIB_FOUND)
-  find_package(PNG)
-  if (PNG_FOUND)
-    target_compile_definitions(cimg INTERFACE cimg_use_zlib cimg_use_png)
-    target_include_directories(cimg INTERFACE ${ZLIB_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS})
-    target_link_libraries(cimg INTERFACE ${ZLIB_LIBRARIES} ${PNG_LIBRARIES})
-  endif ()
-endif()
+
 
 find_package(LAPACK)
 if(LAPACK_FOUND)
