@@ -76,6 +76,9 @@ if(JPEG_FOUND)
   target_include_directories(cimg INTERFACE ${JPEG_INCLUDE_DIRS})
 endif()
 
+#Optional package
+
+#[[
 find_package(TIFF)
 if(TIFF_FOUND)
   target_compile_definitions(cimg INTERFACE cimg_use_tiff)
@@ -106,6 +109,7 @@ if(BLAS_FOUND)
   target_link_libraries(cimg INTERFACE ${BLAS_LIBRARIES})
   target_include_directories(cimg INTERFACE ${BLAS_INCLUDE_DIRS})
 endif()
+]]
 
 find_package(FFTW)
 if(FFTW_FOUND)
