@@ -13,16 +13,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # abilita warning
-#string(APPEND CMAKE_CXX_FLAGS
-#      " -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion"
-#      " -Wshadow -Wimplicit-fallthrough -Wextra-semi -Wold-style-cast")
+string(APPEND MY_CMAKE_CXX_FLAGS
+      " -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion"
+      " -Wshadow -Wimplicit-fallthrough -Wextra-semi -Wold-style-cast")
 
 # abilita asserzioni di debug (in gcc), l'address sanitizer e l'undefined-behaviour sanitizer in debug mode
-string(APPEND CMAKE_CXX_FLAGS_DEBUG " -D_GLIBCXX_ASSERTIONS -fsanitize=address,undefined -fno-omit-frame-pointer")
-string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-omit-frame-pointer")
+string(APPEND MY_CMAKE_CXX_FLAGS_DEBUG " -D_GLIBCXX_ASSERTIONS -fsanitize=address,undefined -fno-omit-frame-pointer")
+string(APPEND MY_CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-omit-frame-pointer")
 
 
-add_subdirectory(matplotplusplus)
+add_subdirectory(matplotplusplus SYSTEM)
 
 
 # se il testing e' abilitato...
@@ -39,6 +39,7 @@ endif()
 
 
 add_executable(my_target main.cpp bird.cpp flock.cpp vector3d.cpp)
-target_link_libraries(my_target PUBLIC matplot)
+#target_compile_options(my_target PRIVATE "$<$<CONFIG:DEBUG>:SHELL: -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wshadow -Wimplicit-fallthrough -Wextra-semi -Wold-style-cast >")
+target_link_libraries(my_target PRIVATE SYSTEM matplot)
 
 
