@@ -1,8 +1,8 @@
 #include "bird.hpp"
 #include <random>
 
-Bird::Bird(Vector3D const& position, int index)
-    : position_{position}, index_{index}
+Bird::Bird(int index, Vector3D const& position)
+    : index_{index}, position_{position}
 {
   // class invariant posizione nella box
 }

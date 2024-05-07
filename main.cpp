@@ -10,7 +10,7 @@ int main()
 
   double delta = 0.1;
   for (int i = 0; i <= 5; ++i) {
-    clock_t inizio = clock();
+    //clock_t inizio = clock();
     auto z         = {1. + i * delta, 1.1 + i * delta, .1, 4. + i * delta};
     auto x         = {1, 2, 3, 4};
     auto y         = {1, 2, 3, 4};
@@ -18,7 +18,7 @@ int main()
     scatter3(x, y, z, "filled");
     view(-40 + i, 30);
 
-    clock_t fine = clock();
+    //clock_t fine = clock();
     // std::cout << (double)(fine-inizio)/CLOCKS_PER_SEC << "\n";
     std::string file = "img/fps_";
     for (int j = 0; j < i; j++) {

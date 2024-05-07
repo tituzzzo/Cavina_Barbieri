@@ -13,7 +13,7 @@ void Flock::spawn_birds(int n_birds)
 {
   for (int i = 0; i < n_birds; ++i) {
     Vector3D position{i * 0.1, i * 0.1, i * 0.1};
-    Bird bird = Bird(position, i);
+    Bird bird = Bird(i, position);
     birds.push_back(bird);
   }
 }

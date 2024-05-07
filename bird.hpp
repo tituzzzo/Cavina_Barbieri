@@ -9,7 +9,7 @@ class Bird
   Vector3D velocity_;
 
  public:
-  Bird(Vector3D const& position, int index);
+  Bird(int index, Vector3D const& position);
 
   bool operator!=(Bird&) const;
 

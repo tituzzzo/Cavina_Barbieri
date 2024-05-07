@@ -130,7 +130,7 @@ target_utf8_options(matplot)
 target_nominmax_definition(matplot)
 
 # Warnings
-maybe_target_pedantic_warnings(matplot)
+#maybe_target_pedantic_warnings(matplot)
 
 #######################################################
 ### Definitions                                     ###
