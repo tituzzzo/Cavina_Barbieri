@@ -54,13 +54,14 @@ double calc_bird_to_bird_distance(const Bird& bird1, const Bird& bird2)
   return distance;
 };
 
-void Flock::find_birds_within_distance(double distance, Bird& reference_bird) const
+void Flock::find_birds_within_distance(double radius_distance, Bird& reference_bird) const
 {
-  std::vector<Bird> provvisory_birds_within_distance{};
+  std::vector<Bird> temp_birds_within_distance{};
   for (const Bird& bird : birds){
-    if (calc_bird_to_bird_distance(reference_bird, bird) <= distance && bird != reference_bird)
+    double distance {calc_bird_to_bird_distance(reference_bird, bird)};
+    if (distance <= radius_distance && bird != reference_bird)
     {
-      //-------------------------------------------------------
+      
     }
     
   }
