@@ -35,7 +35,7 @@ set_compiler_booleans() # detect compiler
 # What to build
 option(MATPLOTPP_BUILD_EXAMPLES "Build examples" ${MASTER_PROJECT})
 if (${MASTER_PROJECT} AND BUILD_TESTING)
-    option(MATPLOTPP_BUILD_TESTS "Build tests" ON)
+    option(MATPLOTPP_BUILD_TESTS "Build tests" OFF) #ON
 else()
     option(MATPLOTPP_BUILD_TESTS "Build tests" OFF)
 endif()
@@ -43,9 +43,9 @@ option(MATPLOTPP_BUILD_INSTALLER "Build installer target" ${MASTER_PROJECT})
 option(MATPLOTPP_BUILD_PACKAGE "Build package" ${MASTER_PROJECT})
 
 # How to build
-option(MATPLOTPP_BUILD_WITH_PEDANTIC_WARNINGS "Use pedantic warnings. This is useful for developers because many of these warnings will be in continuous integration anyway." ${DEBUG_MODE})
+option(MATPLOTPP_BUILD_WITH_PEDANTIC_WARNINGS "Use pedantic warnings. This is useful for developers because many of these warnings will be in continuous integration anyway." OFF) #${DEBUG_MODE})
 option(MATPLOTPP_BUILD_SHARED_LIBS "Build shared libraries" ${BUILD_SHARED_LIBS})
-option(MATPLOTPP_BUILD_WITH_SANITIZERS "Use pedantic warnings." ${DEBUG_MODE})
+option(MATPLOTPP_BUILD_WITH_SANITIZERS "Use pedantic warnings." OFF) #${DEBUG_MODE})
 
 # MSVC hacks
 option(MATPLOTPP_BUILD_WITH_MSVC_HACKS "Accept utf-8 in MSVC by default." ON)
