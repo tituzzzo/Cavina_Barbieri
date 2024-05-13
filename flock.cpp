@@ -6,7 +6,7 @@ Flock::Flock()
   // initialize birds
   spawn_birds(10);
   // init vector birds
-  // init center_mass
+  // init tutto con roba presa da input
 }
 
 void Flock::spawn_birds(int n_birds)
@@ -54,9 +54,9 @@ double calc_bird_to_bird_distance(const Bird& bird1, const Bird& bird2)
   return distance;
 };
 
-void Flock::find_birds_within_distance(double radius_distance, Bird& reference_bird) const
+std::vector<Bird> Flock::find_birds_within_distance(double radius_distance, Bird& reference_bird) const
 {
-  std::vector<Bird> temp_birds_within_distance{};
+  std::vector<Bird> birds_within_distance{};
   for (const Bird& bird : birds){
     double distance {calc_bird_to_bird_distance(reference_bird, bird)};
     if (distance <= radius_distance && bird != reference_bird)
