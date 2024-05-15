@@ -11,10 +11,9 @@ int main()
   double delta = 0.1;
   for (int i = 0; i <= 300; ++i) {
     //clock_t inizio = clock();
-    auto z         = {1. + i * delta, 1.1 + i * delta, .1, 4. + i * delta};
     auto x         = {1, 2, 3, 4};
+    auto z         = {1. + i * delta, 1.1 + i * delta, .1, 4. + i * delta};
     auto y         = {1, 2, 3, 4};
-
     scatter3(x, y, z, "filled");
     view(-40 + i, 30);
 

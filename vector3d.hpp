@@ -10,9 +10,9 @@ struct Vector3D
       , z{z_}
   {}
 
-  Vector3D& operator+=(const Vector3D&);
+  Vector3D& operator+=(Vector3D const&);
   double norm() const;
-  Vector3D operator-(const Vector3D&) const;
-  Vector3D operator*(const Vector3D&) const;
-  Vector3D operator*(double scalar) const;
+  Vector3D operator-(Vector3D const&) const;
+  Vector3D operator*(Vector3D const&) const;
+  Vector3D operator*(const double scalar) const;
 };

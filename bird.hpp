@@ -11,8 +11,8 @@ class Bird
  public:
   Bird(int index, Vector3D const& position);
 
-  bool operator!=(Bird&) const;
-  bool operator!=(const Bird&) const;
+  bool operator!=(Bird&) const; //serve????????? o basta il caso const?
+  bool operator!=(Bird const&) const;
 
   int get_index() const;
   Vector3D const& get_position() const;

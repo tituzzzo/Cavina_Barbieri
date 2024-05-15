@@ -1,15 +1,17 @@
 #include "flock.hpp"
 #include <cmath>
 
-Flock::Flock()
+Flock::Flock(const int n_birds_)
+    : n_birds{n_birds_}
 {
   // initialize birds
-  spawn_birds(10);
+  //birds.reserve(n_birds); //ha senso?
+  spawn_birds();
   // init vector birds
   // init tutto con roba presa da input
 }
 
-void Flock::spawn_birds(int n_birds)
+void Flock::spawn_birds()
 {
   for (int i = 0; i < n_birds; ++i) {
     Vector3D position{i * 0.1, i * 0.1, i * 0.1};
@@ -18,14 +20,14 @@ void Flock::spawn_birds(int n_birds)
   }
 }
 
-Bird& Flock::get_bird(int index)
+Bird& Flock::get_bird(const int index)
 {
   return birds[index];
 }
 
 void Flock::calc_average_velocity_norm()
 {
-  const int N{static_cast<int>(birds.size())};
+  const int N{static_cast<int>(birds.size())}; //puoi usare diretto n_birds
 
   /*
   if (N < 2) {
@@ -42,25 +44,33 @@ void Flock::calc_average_velocity_norm()
     sum_x2 += pow(bird_velocity, 2);
   }
 
-  average_velocity.mean_     = sum_x / N;
+  average_velocity.mean_     = sum_x / N; //static cast n double??????
   average_velocity.sigma_    = std::sqrt((sum_x2 - N * pow(average_velocity.mean_, 2)) / (N - 1));
   average_velocity.mean_err_ = average_velocity.sigma_ / std::sqrt(N);
 }
 
 void Flock::calc_average_bird_to_bird_distance()
-{}
-
-double calc_bird_to_bird_distance(const Bird& bird1, const Bird& bird2)
 {
-  Vector3D difference{bird1.get_position() - bird2.get_position()};
-  double distance{};
-  distance = difference.norm();
-  return distance;
-};
+  double sum_x{};
+  double sum_x2{};
+  for (int i = 0; i < n_birds; ++i)
+  {
+    for (int j = i + 1; j < n_birds; ++j)
+    {
+      double distance = calc_bird_to_bird_distance(birds[i], birds[j]);
+      sum_x += distance;
+      sum_x2 += pow(distance, 2);
+    }
+  }
+  average_bird_to_bird_distance.mean_ = sum_x / n_birds; //static cast n double??????
+  average_bird_to_bird_distance.sigma_ = std::sqrt((sum_x2 - n_birds * pow(average_bird_to_bird_distance.mean_, 2)) / (n_birds - 1));
+  average_bird_to_bird_distance.mean_err_ = average_bird_to_bird_distance.sigma_ / std::sqrt(n_birds);
+  
+}
 
-std::vector<int> Flock::find_birds_within_distance(double radius_distance, const Bird& reference_bird) const
+std::vector<int> Flock::find_birds_within_distance(const double radius_distance, Bird const& reference_bird) const
 {
-  std::vector<int> indexes_of_birds_within_distance{};
+  std::vector<int> indexes_of_birds_within_distance;
   for (const Bird& bird : birds) {
     double distance{calc_bird_to_bird_distance(reference_bird, bird)};
     if (distance <= radius_distance && bird != reference_bird) {
@@ -109,5 +119,13 @@ Vector3D Flock::cohesion_rule(Bird const& reference_bird) const
 {
   std::vector<int> near_birds_indexes = find_birds_within_distance(d, reference_bird);
   Vector3D mass_center{calc_mass_center(near_birds_indexes)};
-  //------------------------------------------------------------------------continua
+  return (mass_center - reference_bird.get_position()) * c;
+}
+
+double calc_bird_to_bird_distance(Bird const& bird1, Bird const& bird2)
+{
+  Vector3D difference{bird1.get_position() - bird2.get_position()};
+  double distance{};
+  distance = difference.norm();
+  return distance;
 }

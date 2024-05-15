@@ -2,17 +2,18 @@
 #include <random>
 
 Bird::Bird(int index, Vector3D const& position)
-    : index_{index}, position_{position}
+    : index_{index}
+    , position_{position}
 {
   // class invariant posizione nella box
 }
-//usare template
+// usare template
 bool Bird::operator!=(Bird& second_bird) const
 {
   return index_ != second_bird.index_;
 }
 
-bool Bird::operator!=(const Bird& second_bird) const
+bool Bird::operator!=(Bird const& second_bird) const
 {
   return index_ != second_bird.index_;
 }
@@ -41,4 +42,3 @@ void Bird::set_velocity(Vector3D& new_velocity)
 {
   velocity_ = new_velocity;
 }
-
