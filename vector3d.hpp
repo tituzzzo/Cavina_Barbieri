@@ -13,6 +13,7 @@ struct Vector3D
   Vector3D& operator+=(Vector3D const&);
   double norm() const;
   Vector3D operator-(Vector3D const&) const;
+  Vector3D operator+(Vector3D const&) const;
   Vector3D operator*(Vector3D const&) const;
   Vector3D operator*(const double scalar) const;
 };

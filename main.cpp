@@ -1,40 +1,31 @@
+#include "flock.hpp"
 #include <matplot/matplot.h>
-#include <time.h>
-#include <chrono>
 #include <iostream>
-#include <thread>
+
+namespace mp = matplot;
 
 int main()
 {
-  using namespace matplot;
+  Flock flock{100};
+  for (int i = 0; i <= 10; ++i) {
+    auto plot1 = mp::subplot({0.25f, 0.45f, 0.5f, 0.5f});
+    auto x = flock.get_coordinates_of_axis('x');
+    auto y = flock.get_coordinates_of_axis('y');
+    auto z = flock.get_coordinates_of_axis('z');
+    mp::scatter3(x, y, z, "filled");
 
-  double delta = 0.1;
-  for (int i = 0; i <= 300; ++i) {
-    //clock_t inizio = clock();
-    auto x         = {1, 2, 3, 4};
-    auto z         = {1. + i * delta, 1.1 + i * delta, .1, 4. + i * delta};
-    auto y         = {1, 2, 3, 4};
-    scatter3(x, y, z, "filled");
-    view(-40 + i, 30);
+    auto plot2 = mp::subplot({0.1f, 0.1f, 0.25f, 0.25f});
+    mp::fplot("sin(x)");
+    //mp::title("Subplot 1: sin(x)");
 
-    //clock_t fine = clock();
-    // std::cout << (double)(fine-inizio)/CLOCKS_PER_SEC << "\n";
-    std::string file = "img/fps_";
-    for (int j = 0; j < i; j++) {
-      /* code */ file += "1";
-    }
+    auto plot3 = mp::subplot({0.65f, 0.1f, 0.25f, 0.25f});
+    mp::fplot("sin(2*x)");
+    //mp::title("Subplot 2: sin(2x)");
+    
+    //mp::view(-40, 30);
 
-    //save(file, "png"); //png pesa meno,meglio usarlo
-    // std::this_thread::sleep_for(std::chrono::nanoseconds(200000000));
+    
   }
 
-  auto z = {1., 1.1, .1, 4.};
-  auto x = {1, 2, 3, 4};
-  auto y = {1, 2, 3, 4};
-
-  scatter3(x, y, z, "~");
-  view(-30, 10);
-
-  show();
   return 0;
 }
