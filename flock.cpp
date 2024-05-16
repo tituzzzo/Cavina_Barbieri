@@ -159,3 +159,13 @@ double calc_bird_to_bird_distance(Bird const& bird1, Bird const& bird2)
   distance = difference.norm();
   return distance;
 }
+void Flock::update_birds_position(double delta_time){
+  for(Bird &bird : birds){
+    Vector3D new_position{};
+    Vector3D old_position = bird.get_position();
+    Vector3D delta_space=bird.get_velocity()*delta_time;
+    new_position = old_position + delta_space;
+    bird.set_position(new_position);
+  }
+}
+

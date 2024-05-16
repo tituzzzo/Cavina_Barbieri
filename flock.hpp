@@ -31,7 +31,8 @@ class Flock
 
  public:
   Flock(const int n_birds_);
-  void update_birds_position();
+  void update_birds_position(double delta_time);
+
   std::vector<double> get_coordinates_of_axis(const char axis) const;
 };
 
