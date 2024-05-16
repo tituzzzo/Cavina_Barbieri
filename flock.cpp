@@ -1,11 +1,12 @@
 #include "flock.hpp"
 #include <cmath>
+#include <random>
 
 Flock::Flock(const int n_birds_)
     : n_birds{n_birds_}
 {
   // initialize birds
-  
+
   // birds.reserve(n_birds); //ha senso?
   spawn_birds();
   // init vector birds
@@ -14,8 +15,15 @@ Flock::Flock(const int n_birds_)
 
 void Flock::spawn_birds()
 {
+  std::default_random_engine eng;
+  std::uniform_int_distribution<> spawn(1, 9);
+  double x, y, z;
   for (int i = 0; i < n_birds; ++i) {
-    Vector3D position{i * 0.1, i * 0.1, i * 0.1};
+    x = static_cast<double>(spawn(eng));
+    y = static_cast<double>(spawn(eng));
+    z = static_cast<double>(spawn(eng));
+
+    Vector3D position{x, y, z};
     Bird bird = Bird(i, position);
     birds.push_back(bird);
   }
@@ -84,7 +92,7 @@ Vector3D Flock::separation_rule(Bird const& reference_bird) const
   Vector3D birds_positions_sum;
   for (auto it = near_birds_indexes.begin(), last = near_birds_indexes.end(); it != last; ++it) {
     Vector3D second_bird_position = birds[*it].get_position();
-    Vector3D distance             = (reference_bird.get_position() - second_bird_position);
+    Vector3D distance             =  second_bird_position - reference_bird.get_position();
     birds_positions_sum += distance;
   }
   return birds_positions_sum * (-s);
@@ -93,11 +101,14 @@ Vector3D Flock::separation_rule(Bird const& reference_bird) const
 Vector3D Flock::alignment_rule(Bird const& reference_bird) const
 {
   std::vector<int> near_birds_indexes = find_birds_within_distance(d, reference_bird);
-  Vector3D birds_velocities_sum;
+  Vector3D birds_velocities_sum{};
   for (auto it = near_birds_indexes.begin(), last = near_birds_indexes.end(); it != last; ++it) {
     birds_velocities_sum += birds[*it].get_velocity();
   }
-  const int N{static_cast<int>(birds.size())};
+  const int N{static_cast<int>(near_birds_indexes.size())};
+  if (N < 2) {
+    return {0.,0.,0.};
+  }
   Vector3D mean_bird_velocity{birds_velocities_sum * static_cast<double>(1 / (N - 1))};
   return (mean_bird_velocity - reference_bird.get_velocity()) * a;
 }
@@ -109,6 +120,9 @@ Vector3D Flock::calc_mass_center(std::vector<int> const& birds_indexes) const
     mass_center += birds[*it].get_position();
   }
   const int N{static_cast<int>(birds.size())};
+  if (N < 2) {
+    return {0.,0.,0.};
+  }
   mass_center = mass_center * static_cast<double>(1 / (N - 1));
   return mass_center;
 }
@@ -136,7 +150,7 @@ std::vector<double> Flock::get_coordinates_of_axis(const char axis) const
       coordinates.push_back(bird.get_position().z);
       break;
     default:
-    //nessun asse inserito
+      // nessun asse inserito o asse non esiste
       break;
     }
   }
@@ -150,7 +164,17 @@ void Flock::calc_bird_velocity(Bird& reference_bird)
   reference_bird.set_velocity(new_velocity);
 }
 
-
+void Flock::update_birds_position(const double delta_time)
+{
+  for (Bird& bird : birds) {
+    calc_bird_velocity(bird);
+    Vector3D new_position{};
+    Vector3D old_position = bird.get_position();
+    Vector3D delta_space  = bird.get_velocity() * delta_time;
+    new_position          = old_position + delta_space;
+    bird.set_position(new_position);
+  }
+}
 
 double calc_bird_to_bird_distance(Bird const& bird1, Bird const& bird2)
 {
@@ -159,13 +183,3 @@ double calc_bird_to_bird_distance(Bird const& bird1, Bird const& bird2)
   distance = difference.norm();
   return distance;
 }
-void Flock::update_birds_position(double delta_time){
-  for(Bird &bird : birds){
-    Vector3D new_position{};
-    Vector3D old_position = bird.get_position();
-    Vector3D delta_space=bird.get_velocity()*delta_time;
-    new_position = old_position + delta_space;
-    bird.set_position(new_position);
-  }
-}
-

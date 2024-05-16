@@ -10,6 +10,7 @@ struct Vector3D
       , z{z_}
   {}
 
+  
   Vector3D& operator+=(Vector3D const&);
   double norm() const;
   Vector3D operator-(Vector3D const&) const;

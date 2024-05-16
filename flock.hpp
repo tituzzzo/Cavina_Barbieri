@@ -7,11 +7,11 @@ class Flock
 {
  private:
   const int n_birds;
-  double d; //const
-  double d_s; //const
-  double a;//const
-  double c; //const
-  double s; //const
+  double d{6.}; //const
+  double d_s{2.}; //const
+  double a{0.};//const
+  double c{0.4}; //const
+  double s{0.}; //const
   Statistics average_velocity;
   Statistics average_bird_to_bird_distance;
   std::vector<Bird> birds; // problema: può essere modificato l'ordine compromettendo il programma; accedere ad index da bird
@@ -31,7 +31,7 @@ class Flock
 
  public:
   Flock(const int n_birds_);
-  void update_birds_position(double delta_time);
+  void update_birds_position(const double delta_time);
 
   std::vector<double> get_coordinates_of_axis(const char axis) const;
 };
