@@ -13,7 +13,7 @@ int main()
     auto y = flock.get_coordinates_of_axis('y');
     auto z = flock.get_coordinates_of_axis('z');
     mp::scatter3(x, y, z, "filled");
-
+    
     auto plot2 = mp::subplot({0.1f, 0.1f, 0.25f, 0.25f});
     mp::fplot("sin(x)");
     //mp::title("Subplot 1: sin(x)");
@@ -21,10 +21,8 @@ int main()
     auto plot3 = mp::subplot({0.65f, 0.1f, 0.25f, 0.25f});
     mp::fplot("sin(2*x)");
     //mp::title("Subplot 2: sin(2x)");
-    
+    mp::save("img/barchart_gif", "pdf");
     //mp::view(-40, 30);
-
-    
   }
 
   return 0;

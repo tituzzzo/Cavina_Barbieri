@@ -22,7 +22,7 @@ string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-o
 
 
 #include la libreria matplotplusplus
-add_subdirectory(matplotplusplus SYSTEM)
+add_subdirectory(matplotplusplus)
 
 # disabilita i warning generati dalla libreria matplotplusplus 
 target_compile_options(matplot PRIVATE "-w")
