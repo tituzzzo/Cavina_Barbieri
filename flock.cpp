@@ -188,9 +188,9 @@ Vector3D Flock::wall_rule(Bird const& reference_bird, double distance_parameter)
 {
   Vector3D wall_distance;
   Vector3D reference_bird_position = reference_bird.get_position();
-  wall_distance.x                  = (box_size - reference_bird_position.x);
-  wall_distance.y                  = (box_size - reference_bird_position.y);
-  wall_distance.z                  = (box_size - reference_bird_position.z);
+  wall_distance.x                  = (box_size / 2 - reference_bird_position.x);
+  wall_distance.y                  = (box_size / 2 - reference_bird_position.y);
+  wall_distance.z                  = (box_size / 2 - reference_bird_position.z);
   Vector3D velocity;
   velocity = wall_distance * distance_parameter;
   return velocity;
