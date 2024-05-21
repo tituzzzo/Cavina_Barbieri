@@ -27,7 +27,7 @@ class Flock
   Vector3D alignment_rule(Bird const& reference_bird) const;
   Vector3D calc_mass_center(std::vector<int> const& birds_indexes) const;
   Vector3D cohesion_rule(Bird const& reference_bird) const;
-  Vector3D cohesion_rule(Bird const& reference_bird) const;
+  Vector3D wall_rule(Bird const& reference_bird, double distance_parameter)const;
   void calc_bird_velocity(Bird& reference_bird);
   std::vector<int> find_birds_within_distance(const double distance, Bird const& reference_bird) const;
 

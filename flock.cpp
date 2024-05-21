@@ -3,7 +3,8 @@
 #include <random>
 
 Flock::Flock(const int n_birds_, const double box_size_)
-    : n_birds{n_birds_}, box_size{box_size_}
+    : n_birds{n_birds_}
+    , box_size{box_size_}
 {
   // initialize birds
 
@@ -92,7 +93,7 @@ Vector3D Flock::separation_rule(Bird const& reference_bird) const
   Vector3D birds_positions_sum;
   for (auto it = near_birds_indexes.begin(), last = near_birds_indexes.end(); it != last; ++it) {
     Vector3D second_bird_position = birds[*it].get_position();
-    Vector3D distance             =  second_bird_position - reference_bird.get_position();
+    Vector3D distance             = second_bird_position - reference_bird.get_position();
     birds_positions_sum += distance;
   }
   return birds_positions_sum * (-s);
@@ -107,7 +108,7 @@ Vector3D Flock::alignment_rule(Bird const& reference_bird) const
   }
   const int N{static_cast<int>(near_birds_indexes.size())};
   if (N < 2) {
-    return {0.,0.,0.};
+    return {0., 0., 0.};
   }
   Vector3D mean_bird_velocity{birds_velocities_sum * static_cast<double>(1 / (N - 1))};
   return (mean_bird_velocity - reference_bird.get_velocity()) * a;
@@ -121,7 +122,7 @@ Vector3D Flock::calc_mass_center(std::vector<int> const& birds_indexes) const
   }
   const int N{static_cast<int>(birds.size())};
   if (N < 2) {
-    return {0.,0.,0.};
+    return {0., 0., 0.};
   }
   mass_center = mass_center * static_cast<double>(1 / (N - 1));
   return mass_center;
@@ -182,4 +183,15 @@ double calc_bird_to_bird_distance(Bird const& bird1, Bird const& bird2)
   double distance{};
   distance = difference.norm();
   return distance;
+}
+Vector3D Flock::wall_rule(Bird const& reference_bird, double distance_parameter) const
+{
+  Vector3D wall_distance;
+  Vector3D reference_bird_position = reference_bird.get_position();
+  wall_distance.x                  = (box_size - reference_bird_position.x);
+  wall_distance.y                  = (box_size - reference_bird_position.y);
+  wall_distance.z                  = (box_size - reference_bird_position.z);
+  Vector3D velocity;
+  velocity = wall_distance * distance_parameter;
+  return velocity;
 }
