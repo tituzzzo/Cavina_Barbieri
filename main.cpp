@@ -13,7 +13,11 @@ int main()
     auto x = flock.get_coordinates_of_axis('x');
     auto y = flock.get_coordinates_of_axis('y');
     auto z = flock.get_coordinates_of_axis('z');
+    
     mp::scatter3(x, y, z, "filled");
+    mp::xlim({0, 15});
+    mp::ylim({0, 15});
+    mp::zlim({0, 15});
     
     /*
     auto plot2 = mp::subplot({0.1f, 0.1f, 0.25f, 0.25f});
@@ -25,9 +29,8 @@ int main()
     //mp::title("Subplot 2: sin(2x)");
     mp::save("img/barchart_gif", "pdf");
     */
-    mp::view(-40, 30);
+    mp::view(-10, 10); //-40 30
     flock.update_birds_position(0.001);
-    mp::show();
 
   }
 

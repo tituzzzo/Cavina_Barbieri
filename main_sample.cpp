@@ -14,7 +14,8 @@ int main()
     auto x         = {1, 2, 3, 4};
     auto z         = {1. + i * delta, 1.1 + i * delta, .1, 4. + i * delta};
     auto y         = {1, 2, 3, 4};
-    scatter3(x, y, z, "filled");
+    auto size = {12, 20, 30 ,40};
+    scatter3(x, y, z, size, "filled");
     view(-40 + i, 30);
 
     //clock_t fine = clock();

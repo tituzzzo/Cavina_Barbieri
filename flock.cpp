@@ -2,8 +2,8 @@
 #include <cmath>
 #include <random>
 
-Flock::Flock(const int n_birds_)
-    : n_birds{n_birds_}
+Flock::Flock(const int n_birds_, const double box_size_)
+    : n_birds{n_birds_}, box_size{box_size_}
 {
   // initialize birds
 
