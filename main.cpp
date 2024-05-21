@@ -7,7 +7,7 @@ namespace mp = matplot;
 int main()
 {
   int n_birds{100};
-  Flock flock{n_birds};
+  Flock flock{n_birds, 15};
   for (int i = 0; i <= 1800; ++i){
     //auto plot1 = mp::subplot({0.25f, 0.45f, 0.5f, 0.5f});
     auto x = flock.get_coordinates_of_axis('x');
@@ -15,9 +15,9 @@ int main()
     auto z = flock.get_coordinates_of_axis('z');
     
     mp::scatter3(x, y, z, "filled");
-    mp::xlim({0, 15});
-    mp::ylim({0, 15});
-    mp::zlim({0, 15});
+    //mp::xlim({-10, 10});
+    //mp::ylim({-10, 10});
+    //mp::zlim({-10, 10});
     
     /*
     auto plot2 = mp::subplot({0.1f, 0.1f, 0.25f, 0.25f});
@@ -30,7 +30,7 @@ int main()
     mp::save("img/barchart_gif", "pdf");
     */
     mp::view(-10, 10); //-40 30
-    flock.update_birds_position(0.001);
+    flock.update_birds_position(0.002);
 
   }
 
