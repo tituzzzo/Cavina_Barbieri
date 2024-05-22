@@ -29,7 +29,7 @@ class Flock
   Vector2D cohesion_rule(Bird const& reference_bird) const;
   Vector2D wall_rule(Bird const& reference_bird, double distance_parameter)const;
   void calc_bird_velocity(Bird& reference_bird);
-  std::vector<int> const& find_birds_within_distance(std::vector<int>& vector_to_fill, double distance, Bird const& reference_bird) const;
+  void find_birds_within_distance(std::vector<int>& vector_to_fill, double distance, Bird const& reference_bird) const;
 
  public:
   Flock(const int n_birds_, const double box_size);

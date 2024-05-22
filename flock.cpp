@@ -77,7 +77,7 @@ void Flock::calc_average_bird_to_bird_distance()
   average_bird_to_bird_distance.mean_err_ = average_bird_to_bird_distance.sigma_ / std::sqrt(n_birds);
 }
 
-std::vector<int> const& Flock::find_birds_within_distance(std::vector<int>& vector_to_fill, const double radius_distance, Bird const& reference_bird) const
+void Flock::find_birds_within_distance(std::vector<int>& vector_to_fill, const double radius_distance, Bird const& reference_bird) const
 {
   for (const Bird& bird : birds) {
     double distance{calc_bird_to_bird_distance(reference_bird, bird)};
@@ -85,13 +85,12 @@ std::vector<int> const& Flock::find_birds_within_distance(std::vector<int>& vect
       vector_to_fill.push_back(bird.get_index());
     }
   }
-  return vector_to_fill;
 }
 
-Vector2D Flock::separation_rule(Bird const& reference_bird) const //?????????????????????????????????????
+Vector2D Flock::separation_rule(Bird const& reference_bird) const
 {
-  std::vector<int> near_birds_indexes;
-  find_birds_within_distance(near_birds_indexes, d_s, reference_bird); //sta ritornando?
+  std::vector<int> near_birds_indexes{};
+  find_birds_within_distance(near_birds_indexes, d_s, reference_bird);
   Vector2D birds_positions_sum{};
   for (auto it = near_birds_indexes.begin(), last = near_birds_indexes.end(); it != last; ++it) {
     Vector2D second_bird_position = birds[static_cast<index_t>(*it)].get_position();
