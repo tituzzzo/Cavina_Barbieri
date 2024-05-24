@@ -1,3 +1,6 @@
+#ifndef FLOCK_HPP
+#define FLOCK_HPP
+
 #include "bird.hpp"
 #include <vector>
 
@@ -20,8 +23,8 @@ class Flock
   Bird& get_bird(const int index);
   // statistics
 
-  void calc_average_velocity_norm();
-  void calc_average_bird_to_bird_distance();
+  Statistics calc_average_velocity_norm();
+  Statistics calc_average_bird_to_bird_distance();
   // functions
   Vector2D separation_rule(Bird const& reference_bird) const;
   Vector2D alignment_rule(Bird const& reference_bird) const;
@@ -39,3 +42,6 @@ class Flock
 };
 
 double calc_bird_to_bird_distance(Bird const& bird1, Bird const& bird2);
+
+
+#endif

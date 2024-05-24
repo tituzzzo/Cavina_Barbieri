@@ -1,3 +1,6 @@
+#ifndef BIRD_HPP
+#define BIRD_HPP
+
 #include "vector2d.hpp"
 #include <vector>
 
@@ -11,7 +14,7 @@ class Bird
  public:
   Bird(int index, Vector2D const& position);
 
-  bool operator!=(Bird&) const; //serve????????? o basta il caso const?
+  bool operator!=(Bird&) const; //serve????????? o basta il caso const? template?
   bool operator!=(Bird const&) const;
 
   int get_index() const;
@@ -20,6 +23,8 @@ class Bird
   Vector2D const& get_velocity() const;
   void set_velocity(Vector2D&);
 };
+
+#endif
 
 
 

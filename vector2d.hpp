@@ -1,3 +1,6 @@
+#ifndef VECTOR2D_HPP
+#define VECTOR2D_HPP
+
 struct Vector2D
 {
   double x;
@@ -9,10 +12,12 @@ struct Vector2D
   {}
 
   
-  Vector2D& operator+=(Vector2D const&);
   double norm() const;
+  Vector2D& operator+=(Vector2D const&);
   Vector2D operator-(Vector2D const&) const;
   Vector2D operator+(Vector2D const&) const;
   Vector2D operator*(Vector2D const&) const;
   Vector2D operator*(const double scalar) const;
 };
+
+#endif

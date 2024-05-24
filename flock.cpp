@@ -37,7 +37,7 @@ Bird& Flock::get_bird(const int index)
   return birds[static_cast<index_t>(index)];
 }
 
-void Flock::calc_average_velocity_norm()
+Statistics Flock::calc_average_velocity_norm()
 {
   const int N{static_cast<int>(birds.size())}; // puoi usare diretto n_birds
 
@@ -59,9 +59,11 @@ void Flock::calc_average_velocity_norm()
   average_velocity.mean_     = sum_x / N; // static cast n double??????
   average_velocity.sigma_    = std::sqrt((sum_x2 - N * pow(average_velocity.mean_, 2)) / (N - 1));
   average_velocity.mean_err_ = average_velocity.sigma_ / std::sqrt(N);
+
+  return average_velocity;
 }
 
-void Flock::calc_average_bird_to_bird_distance()
+Statistics Flock::calc_average_bird_to_bird_distance()
 {
   double sum_x{};
   double sum_x2{};
@@ -75,6 +77,8 @@ void Flock::calc_average_bird_to_bird_distance()
   average_bird_to_bird_distance.mean_     = sum_x / n_birds; // static cast n double??????
   average_bird_to_bird_distance.sigma_    = std::sqrt((sum_x2 - n_birds * pow(average_bird_to_bird_distance.mean_, 2)) / (n_birds - 1));
   average_bird_to_bird_distance.mean_err_ = average_bird_to_bird_distance.sigma_ / std::sqrt(n_birds);
+
+  return average_bird_to_bird_distance;
 }
 
 void Flock::find_birds_within_distance(std::vector<int>& vector_to_fill, const double radius_distance, Bird const& reference_bird) const

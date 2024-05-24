@@ -1,3 +1,6 @@
+#ifndef STATISTICS_HPP
+#define STATISTICS_HPP
+
 struct Statistics
 {
   double mean_;
@@ -9,3 +12,5 @@ struct Statistics
       , mean_err_{mean_err}
   {}
 };
+
+#endif
