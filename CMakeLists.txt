@@ -22,24 +22,24 @@ string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-o
 
 
 #include la libreria matplotplusplus
-add_subdirectory(matplotplusplus)
 
-# disabilita i warning generati dalla libreria matplotplusplus 
-target_compile_options(matplot PRIVATE "-w")
+find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
+
+
 
 
 # se il testing e' abilitato...
 #   per disabilitare il testing, passare -DBUILD_TESTING=OFF a cmake durante la fase di configurazione
 if (BUILD_TESTING)
 
-  # aggiungi l'eseguibile all.t
-   #add_executable(functions.t functions.test.cpp functions.cpp)
-  # aggiungi l'eseguibile all.t alla lista dei test
-   #add_test(NAME functions.t COMMAND functions.t)
+# aggiungi l'eseguibile all.t
+#add_executable(functions.t functions.test.cpp functions.cpp)
+# aggiungi l'eseguibile all.t alla lista dei test
+#add_test(NAME functions.t COMMAND functions.t)
 
 endif()
 
 add_executable(flock_simulation main.cpp bird.cpp flock.cpp vector2d.cpp)
-target_link_libraries(flock_simulation PRIVATE matplot)
+target_link_libraries(flock_simulation sfml-graphics sfml-window sfml-system)
 
 
