@@ -20,13 +20,8 @@ string(APPEND CMAKE_CXX_FLAGS
 string(APPEND CMAKE_CXX_FLAGS_DEBUG " -D_GLIBCXX_ASSERTIONS -fsanitize=address,undefined -fno-omit-frame-pointer")
 string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-omit-frame-pointer")
 
-
-#include la libreria matplotplusplus
-
+# cerca libreria sfml
 find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
-
-
-
 
 # se il testing e' abilitato...
 #   per disabilitare il testing, passare -DBUILD_TESTING=OFF a cmake durante la fase di configurazione
@@ -40,6 +35,7 @@ if (BUILD_TESTING)
 endif()
 
 add_executable(flock_simulation main.cpp bird.cpp flock.cpp vector2d.cpp)
+
 target_link_libraries(flock_simulation sfml-graphics sfml-window sfml-system)
 
 
