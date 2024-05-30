@@ -153,6 +153,11 @@ Vector2D Flock::wall_rule(Bird const& reference_bird, double distance_parameter)
   return velocity;
 }
 
+void Flock::set_bird_position(const int bird_index, Vector2D const& new_position)
+{
+  birds[static_cast<index_t>(bird_index)].set_position(new_position);
+}
+
 std::vector<double> Flock::get_coordinates_of_axis(const char axis) const //forse non serve con sflm.... se serve ancora metti passaggio per reference
 {
   std::vector<double> coordinates{};

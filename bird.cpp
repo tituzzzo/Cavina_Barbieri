@@ -28,7 +28,7 @@ Vector2D const& Bird::get_position() const
   return position_;
 }
 
-void Bird::set_position(Vector2D& new_position)
+void Bird::set_position(Vector2D const& new_position)
 {
   position_ = new_position;
 }
@@ -38,7 +38,7 @@ Vector2D const& Bird::get_velocity() const
   return velocity_;
 }
 
-void Bird::set_velocity(Vector2D& new_velocity)
+void Bird::set_velocity(Vector2D const& new_velocity)
 {
   velocity_ = new_velocity;
 }

@@ -19,9 +19,9 @@ class Bird
 
   int get_index() const;
   Vector2D const& get_position() const;
-  void set_position(Vector2D&);
+  void set_position(Vector2D const&);
   Vector2D const& get_velocity() const;
-  void set_velocity(Vector2D&);
+  void set_velocity(Vector2D const&);
 };
 
 #endif

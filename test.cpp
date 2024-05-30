@@ -48,7 +48,13 @@ TEST_CASE("Testing calc_bird_to_bird_distance function (in flock.hpp)")
 
 TEST_CASE("Testing Flock Class")
 {
-  SUBCASE("Testing calc_average_velocity_norm function")
+  SUBCASE("Testing find_birds_within_distance function")
   {
+    // int n_birds = 3;
+    // Flock flock{n_birds, 15.};
+    // flock.set_bird_position(0, {1.,1.});
+    // flock.set_bird_position(1, {2.,2.});
+    // flock.set_bird_position(2, {3.,1.});
+    // CHECK(flock.);
   }
 }
