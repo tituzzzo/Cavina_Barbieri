@@ -20,8 +20,9 @@ Flock::Flock(FParametres const& flock_parameters)
 
 void Flock::spawn_birds()
 {
+  //non si devono sovrappore
   std::default_random_engine eng{static_cast<long unsigned int>(time(0))};
-  std::uniform_int_distribution<> spawn(1, 9);
+  std::uniform_int_distribution<> spawn(5, 50);
   double x, y;
   for (int i = 0; i < par.n_birds; ++i) {
     x = static_cast<double>(spawn(eng));
@@ -37,7 +38,19 @@ void Flock::calc_bird_velocity(Bird& reference_bird)
 {
   Vector2D new_velocity;
   new_velocity = reference_bird.get_velocity() + separation_rule(reference_bird, par.d_s, par.s, birds) + alignment_rule(reference_bird, par.d, par.a, birds) + cohesion_rule(reference_bird, par.d, par.c, birds) + wall_rule(reference_bird, par.w, par.box_size);
-  reference_bird.set_velocity(new_velocity);
+  // if (new_velocity.norm() > par.max_bird_velocity) {
+  //   const double scaling_factor = sqrt(static_cast<double>((par.max_bird_velocity, 2)) / static_cast<double>((pow(new_velocity.x, 2) + pow(new_velocity.y, 2))));
+  //   reference_bird.set_velocity(new_velocity * scaling_factor);
+  // } else {
+  //   reference_bird.set_velocity(new_velocity);
+  // }
+    reference_bird.set_velocity(new_velocity);
+
+}
+
+int Flock::get_n_birds() const
+{
+  return par.n_birds;
 }
 
 void Flock::update_birds_position(const double delta_time)
@@ -50,6 +63,7 @@ void Flock::update_birds_position(const double delta_time)
     new_position          = old_position + delta_space;
     bird.set_position(new_position);
   }
+  std::cout << "updated\n";
 }
 
 std::vector<double> Flock::get_coordinates_of_axis(const char axis) const // forse non serve con sflm.... se serve ancora metti passaggio per reference
@@ -108,8 +122,8 @@ Statistics calc_average_bird_to_bird_distance(std::vector<Bird> const& birds)
   const int N{static_cast<int>(birds.size())};
 
   int sum_cont{0};
-  for (index_t i = 0; i <= static_cast<index_t>(N - 1); ++i) {
-    for (index_t j = i + 1; j <= static_cast<index_t>(N - 1); ++j) {
+  for (index_t i{0}; i <= static_cast<index_t>(N - 1); ++i) {
+    for (index_t j{i + 1}; j <= static_cast<index_t>(N - 1); ++j) {
       double distance = calc_bird_to_bird_distance(birds[i], birds[j]);
       sum_x += distance;
       sum_x2 += pow(distance, 2);
@@ -190,12 +204,18 @@ Vector2D cohesion_rule(Bird const& reference_bird, const double d, const double 
 
 Vector2D wall_rule(Bird const& reference_bird, const double w_factor, const double box_size)
 {
-  // andrebe fatto un controllo sulla posizione dell'uccello per evitare che escano? o forse sticazzi
   Vector2D wall_distance;
+  Vector2D half_wall_distance;
   Vector2D reference_bird_position = reference_bird.get_position();
-  wall_distance.x                  = (box_size / 2 - reference_bird_position.x);
-  wall_distance.y                  = (box_size / 2 - reference_bird_position.y);
-  return wall_distance * w_factor;
+
+  wall_distance.x      = (box_size / 2 - reference_bird_position.x);
+  wall_distance.y      = (box_size / 2 - reference_bird_position.y);
+  half_wall_distance.x = (box_size / 2 - std::abs(wall_distance.x));
+  half_wall_distance.y = (box_size / 2 - std::abs(wall_distance.y));
+  Vector2D velocity;
+  velocity.x = wall_distance.x * (1. / half_wall_distance.x);
+  velocity.y = wall_distance.y * (1. / half_wall_distance.y);
+  return velocity;
 }
 
 double calc_bird_to_bird_distance(Bird const& bird1, Bird const& bird2)

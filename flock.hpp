@@ -16,17 +16,19 @@ struct FParametres
   const double a; // aligment factor
   const double c; // cohesion factor
   const double w; // wall repulsion factor
+  const double max_bird_velocity; //maximum speed of a bird
 
   // default parametres values have been set according to our suggestion
   // clang-format off
   FParametres(const int n_birds_ = 100,     
-              const double box_size_ = 15., 
-              const double d_ = 5.,        
-              const double d_s_ = 3.,      
-              const double s_ = 0.6,        
-              const double a_ = 0.01,        
-              const double c_ = 0.5,        
-              const double w_ = 0.5)        
+              const double box_size_ = 40., 
+              const double d_ = 15.,        
+              const double d_s_ = 5.,      
+              const double s_ = 0.9,        
+              const double a_ = 0.001,        
+              const double c_ = 0.9,        
+              const double w_ = 1,
+              const double max_bird_velocity_ = 100.)        
       :                              
               n_birds{n_birds_}, 
               box_size{box_size_}, 
@@ -35,7 +37,8 @@ struct FParametres
               s{s_}, 
               a{a_}, 
               c{c_}, 
-              w{w_}
+              w{w_},
+              max_bird_velocity{max_bird_velocity_}
   // clang-format on
   {
     // class invariant sui parametri
@@ -57,6 +60,7 @@ class Flock
 
  public:
   Flock(FParametres const& flock_parameters);
+  int get_n_birds() const;
   void update_birds_position(const double delta_time);
 
   std::vector<double> get_coordinates_of_axis(const char axis) const; // da rifare se serve
