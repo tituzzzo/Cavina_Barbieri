@@ -26,9 +26,9 @@ struct FParametres
               const double d_s_ = 5.,      
               const double s_ = 0.9,        
               const double a_ = 0.001,        
-              const double c_ = 0.9,        
+              const double c_ = 0.6,        
               const double w_ = 1,
-              const double max_bird_velocity_ = 100.)        
+              const double max_bird_velocity_ = 10000.)        
       :                              
               n_birds{n_birds_}, 
               box_size{box_size_}, 

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-Flock flock{FParametres{200, 80.}};
+Flock flock{FParametres{160, 80.}};
 
 class Image
 {
@@ -44,7 +44,7 @@ void Image::show() const
 
     window.clear();
 
-    flock.update_birds_position(0.02);
+    flock.update_birds_position(0.002);
     std::vector<double> birds_x{flock.get_coordinates_of_axis('x')};
     std::vector<double> birds_y{flock.get_coordinates_of_axis('y')};
 

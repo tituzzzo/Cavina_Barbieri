@@ -22,7 +22,7 @@ void Flock::spawn_birds()
 {
   //non si devono sovrappore
   std::default_random_engine eng{static_cast<long unsigned int>(time(0))};
-  std::uniform_int_distribution<> spawn(5, 50);
+  std::uniform_int_distribution<> spawn(40, 60);
   double x, y;
   for (int i = 0; i < par.n_birds; ++i) {
     x = static_cast<double>(spawn(eng));
@@ -38,14 +38,13 @@ void Flock::calc_bird_velocity(Bird& reference_bird)
 {
   Vector2D new_velocity;
   new_velocity = reference_bird.get_velocity() + separation_rule(reference_bird, par.d_s, par.s, birds) + alignment_rule(reference_bird, par.d, par.a, birds) + cohesion_rule(reference_bird, par.d, par.c, birds) + wall_rule(reference_bird, par.w, par.box_size);
-  //if (new_velocity.norm() > par.max_bird_velocity) {
-  //const double scaling_factor = sqrt(static_cast<double>(pow(par.max_bird_velocity, 2)) / static_cast<double>(pow(new_velocity.norm(),2)));
-  //reference_bird.set_velocity(new_velocity * scaling_factor);
-  // } else {
-  //reference_bird.set_velocity(new_velocity);
-  //}
-  reference_bird.set_velocity(new_velocity);
 
+  if (new_velocity.norm() > par.max_bird_velocity) {
+  const double scaling_factor = sqrt(static_cast<double>(pow(par.max_bird_velocity, 2)) / static_cast<double>(pow(new_velocity.norm(),2)));
+  reference_bird.set_velocity(new_velocity * scaling_factor);
+  } else {
+  reference_bird.set_velocity(new_velocity);
+  }
 }
 
 int Flock::get_n_birds() const
@@ -63,7 +62,6 @@ void Flock::update_birds_position(const double delta_time)
     new_position          = old_position + delta_space;
     bird.set_position(new_position);
   }
-  std::cout << "updated\n";
 }
 
 std::vector<double> Flock::get_coordinates_of_axis(const char axis) const // forse non serve con sflm.... se serve ancora metti passaggio per reference
