@@ -18,6 +18,7 @@ struct Vector2D
   Vector2D operator+(Vector2D const&) const;
   Vector2D operator*(Vector2D const&) const;
   Vector2D operator*(const double scalar) const;
+  bool operator==(Vector2D const&) const;
 };
 
 #endif

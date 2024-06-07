@@ -33,3 +33,8 @@ Vector2D Vector2D::operator*(const double scalar) const
 {
   return Vector2D{x * scalar, y * scalar};
 }
+
+bool Vector2D::operator==(Vector2D const& v) const
+{
+  return x == v.x && y == v.y;
+}
