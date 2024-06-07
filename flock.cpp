@@ -38,13 +38,13 @@ void Flock::calc_bird_velocity(Bird& reference_bird)
 {
   Vector2D new_velocity;
   new_velocity = reference_bird.get_velocity() + separation_rule(reference_bird, par.d_s, par.s, birds) + alignment_rule(reference_bird, par.d, par.a, birds) + cohesion_rule(reference_bird, par.d, par.c, birds) + wall_rule(reference_bird, par.w, par.box_size);
-  // if (new_velocity.norm() > par.max_bird_velocity) {
-  //   const double scaling_factor = sqrt(static_cast<double>((par.max_bird_velocity, 2)) / static_cast<double>((pow(new_velocity.x, 2) + pow(new_velocity.y, 2))));
-  //   reference_bird.set_velocity(new_velocity * scaling_factor);
+  //if (new_velocity.norm() > par.max_bird_velocity) {
+  //const double scaling_factor = sqrt(static_cast<double>(pow(par.max_bird_velocity, 2)) / static_cast<double>(pow(new_velocity.norm(),2)));
+  //reference_bird.set_velocity(new_velocity * scaling_factor);
   // } else {
-  //   reference_bird.set_velocity(new_velocity);
-  // }
-    reference_bird.set_velocity(new_velocity);
+  //reference_bird.set_velocity(new_velocity);
+  //}
+  reference_bird.set_velocity(new_velocity);
 
 }
 
