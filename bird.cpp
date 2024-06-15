@@ -1,17 +1,7 @@
 #include "bird.hpp"
 #include <random>
 
-Bird::Bird(int index, Vector2D const& position)
-    : index_{index}
-    , position_{position}
-{
-  // class invariant posizione nella box
-}
-// usare template
-bool Bird::operator!=(Bird& second_bird) const
-{
-  return index_ != second_bird.index_;
-}
+namespace fl {
 
 bool Bird::operator!=(Bird const& second_bird) const
 {
@@ -42,3 +32,5 @@ void Bird::set_velocity(Vector2D const& new_velocity)
 {
   velocity_ = new_velocity;
 }
+
+} // namespace fl

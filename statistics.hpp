@@ -1,6 +1,8 @@
 #ifndef STATISTICS_HPP
 #define STATISTICS_HPP
 
+namespace fl {
+
 struct Statistics
 {
   double mean_;
@@ -12,5 +14,7 @@ struct Statistics
       , mean_err_{mean_err}
   {}
 };
+
+} // namespace fl
 
 #endif

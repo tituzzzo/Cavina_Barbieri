@@ -28,14 +28,24 @@ find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
 if (BUILD_TESTING)
 
 # aggiungi l'eseguibile all.t
-#add_executable(functions.t functions.test.cpp functions.cpp)
+add_executable(test.t test.cpp flock.cpp vector2d.cpp bird.cpp)
 # aggiungi l'eseguibile all.t alla lista dei test
-#add_test(NAME functions.t COMMAND functions.t)
+add_test(NAME test.t COMMAND test.t)
 
 endif()
 
-add_executable(flock_simulation main.cpp bird.cpp flock.cpp vector2d.cpp)
+add_executable(flock_simulation main.cpp bird.cpp flock.cpp vector2d.cpp gui.cpp)
 
-target_link_libraries(flock_simulation sfml-graphics sfml-window sfml-system)
+add_subdirectory(third_party/sfml-widgets SYSTEM)
+
+target_link_libraries(flock_simulation sfml-graphics sfml-window sfml-system sfml-widgets)
+
+
+#disabilita i warning della libreria sfml-widgets
+target_compile_options(sfml-widgets PRIVATE "-w")
+
+
+
+
 
 

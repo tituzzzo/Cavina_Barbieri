@@ -2,75 +2,84 @@
 #define FLOCK_HPP
 
 #include "bird.hpp"
+#include "statistics.hpp"
+#include <stdexcept>
+
 #include <vector>
 
-#include "statistics.hpp"
+namespace fl {
 
 struct FParametres
 {
-  const int n_birds; // number of birds to spawn 
-  const double box_size; // edge size of the box area where the simulation will run
-  const double d; // distance used with alignment and cohesion rule
-  const double d_s; // distance used with separation rule
-  const double s; // separation factor
-  const double a; // aligment factor
-  const double c; // cohesion factor
-  const double w; // wall repulsion factor
-  const double max_bird_velocity; //maximum speed of a bird
+  const int n_birds_;        // number of birds to spawn
+  const int box_size_;       // size of the box area where the simulation will run
+  double d_;                 // distance used with alignment and cohesion rule
+  double d_s_;               // distance used with separation rule
+  double s_;                 // separation factor
+  double a_;                 // aligment factor
+  double c_;                 // cohesion factor
+  double max_bird_velocity_; // maximum speed of a bird
 
   // default parametres values have been set according to our suggestion
   // clang-format off
-  FParametres(const int n_birds_ = 100,     
-              const double box_size_ = 40., 
-              const double d_ = 15.,        
-              const double d_s_ = 5.,      
-              const double s_ = 0.9,        
-              const double a_ = 0.001,        
-              const double c_ = 0.6,        
-              const double w_ = 1,
-              const double max_bird_velocity_ = 10000.)        
+  FParametres(const int n_birds = 200,     
+              const int box_size = 140., 
+              const double d = 15.,        
+              const double d_s = 5.,      
+              const double s = 0.7,        
+              const double a = 0.01,        
+              const double c = 0.6,      
+              const double max_bird_velocity = 300.)        
       :                              
-              n_birds{n_birds_}, 
-              box_size{box_size_}, 
-              d{d_}, 
-              d_s{d_s_}, 
-              s{s_}, 
-              a{a_}, 
-              c{c_}, 
-              w{w_},
-              max_bird_velocity{max_bird_velocity_}
-  // clang-format on
+              n_birds_{n_birds}, 
+              box_size_{box_size}, 
+              d_{d}, 
+              d_s_{d_s}, 
+              s_{s}, 
+              a_{a}, 
+              c_{c}, 
+              max_bird_velocity_{max_bird_velocity}
   {
-    // class invariant sui parametri
+    if(n_birds < 3 || n_birds > 1000) { throw std::runtime_error{"Flock parameter: wrong n_birds initialization."}; }
+    if(box_size < 50 || box_size > 400) { throw std::runtime_error{"Flock parameter: wrong box_size initialization."}; }
+    if(d < 0 || d > box_size) { throw std::runtime_error{"Flock parameter: wrong d initialization."}; }
+    if(d_s < 0 || d_s > box_size) { throw std::runtime_error{"Flock parameter: wrong d_s initialization."}; }
+    if(s < 0 || s > 1) { throw std::runtime_error{"Flock parameter: wrong s initialization."}; }
+    if(a < 0 || a > 1) { throw std::runtime_error{"Flock parameter: wrong a initialization."}; }
+    if(c < 0 || c > 1) { throw std::runtime_error{"Flock parameter: wrong c initialization."}; }
+    if(max_bird_velocity < 10 || max_bird_velocity > 500) { throw std::runtime_error{"Flock parameter: wrong max_bird_velocity initialization."}; }
   }
+  // clang-format on
 };
 
 class Flock
 {
  private:
-  FParametres par;
+  // a vector containing all active birds
+  std::vector<Bird> birds_;
 
-  std::vector<Bird> birds;
-
-  Statistics average_velocity;
-  Statistics average_bird_to_bird_distance;
-  
   void spawn_birds();
+  void set_random_velocities();
+
+  // this method applies all flock rules to a bird and prevents it from exceeding the max_bird_velocity parameter
   void calc_bird_velocity(Bird& reference_bird);
 
  public:
+  FParametres par_;
   Flock(FParametres const& flock_parameters);
-  int get_n_birds() const;
+  Bird const& get_bird(const int bird_index) const;
+  std::vector<Bird> const& get_birds() const;
   void update_birds_position(const double delta_time);
-
-  std::vector<double> get_coordinates_of_axis(const char axis) const; // da rifare se serve
 };
-
+ 
 Statistics calc_average_velocity_norm(std::vector<Bird> const& birds);
 
 Statistics calc_average_bird_to_bird_distance(std::vector<Bird> const& birds);
 
+// this function is used by a bird to obtain the indexes of all the birds located within a radius distance 
 void find_birds_within_distance(std::vector<int>& vector_to_fill, Bird const& reference_bird, const double radius_distance, std::vector<Bird> const& birds);
+
+void limit_bird_velocity_to_value(Vector2D& velocity, const double max_bird_velocity_norm);
 
 Vector2D separation_rule(Bird const& reference_bird, const double d_s, const double s_factor, std::vector<Bird> const& birds);
 
@@ -80,8 +89,10 @@ Vector2D calc_mass_center(std::vector<int> const& birds_indexes, std::vector<Bir
 
 Vector2D cohesion_rule(Bird const& reference_bird, const double d, const double c_factor, std::vector<Bird> const& birds);
 
-Vector2D wall_rule(Bird const& reference_bird, const double wall_repulsion_factor, const double box_size);
-
 double calc_bird_to_bird_distance(Bird const& bird1, Bird const& bird2);
+
+double get_bird_direction(Bird const& reference_bird, const bool use_degrees);
+
+} // namespace fl
 
 #endif

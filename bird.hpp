@@ -4,17 +4,21 @@
 #include "vector2d.hpp"
 #include <vector>
 
+namespace fl {
+
 class Bird
 {
  private:
- const int index_;
+  const int index_;
   Vector2D position_;
   Vector2D velocity_;
 
  public:
-  Bird(int index, Vector2D const& position);
+  Bird(int index, Vector2D const& position)
+      : index_{index}
+      , position_{position}
+  {}
 
-  bool operator!=(Bird&) const; //serve????????? o basta il caso const? template?
   bool operator!=(Bird const&) const;
 
   int get_index() const;
@@ -24,68 +28,6 @@ class Bird
   void set_velocity(Vector2D const&);
 };
 
+} // namespace fl
+
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
