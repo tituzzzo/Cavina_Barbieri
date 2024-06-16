@@ -29,19 +29,21 @@ if (BUILD_TESTING)
 
 # aggiungi l'eseguibile all.t
 add_executable(test.t test.cpp flock.cpp vector2d.cpp bird.cpp)
+target_link_libraries(test.t sfml-graphics sfml-window sfml-system sfml-widgets)
+
 # aggiungi l'eseguibile all.t alla lista dei test
 add_test(NAME test.t COMMAND test.t)
 
 endif()
 
-add_executable(flock_simulation main.cpp bird.cpp flock.cpp vector2d.cpp gui.cpp)
+add_executable(flock_simulation main.cpp bird.cpp flock.cpp vector2d.cpp)
 
 add_subdirectory(third_party/sfml-widgets SYSTEM)
 
 target_link_libraries(flock_simulation sfml-graphics sfml-window sfml-system sfml-widgets)
 
 
-#disabilita i warning della libreria sfml-widgets
+# disabilita i warning della libreria sfml-widgets
 target_compile_options(sfml-widgets PRIVATE "-w")
 
 

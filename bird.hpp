@@ -2,7 +2,6 @@
 #define BIRD_HPP
 
 #include "vector2d.hpp"
-#include <vector>
 
 namespace fl {
 

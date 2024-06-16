@@ -3,9 +3,10 @@
 
 #include "bird.hpp"
 #include "statistics.hpp"
-#include <stdexcept>
 
+#include <stdexcept>
 #include <vector>
+#include <cmath>
 
 namespace fl {
 
@@ -23,9 +24,7 @@ struct FParametres
   // default parametres values have been set according to our suggestion
   // clang-format off
   FParametres(const int n_birds = 200,     
-              const int box_size = 140., 
-              const double d = 15.,        
-              const double d_s = 5.,      
+              const int box_size = 140.,     
               const double s = 0.7,        
               const double a = 0.01,        
               const double c = 0.6,      
@@ -33,17 +32,18 @@ struct FParametres
       :                              
               n_birds_{n_birds}, 
               box_size_{box_size}, 
-              d_{d}, 
-              d_s_{d_s}, 
               s_{s}, 
               a_{a}, 
               c_{c}, 
               max_bird_velocity_{max_bird_velocity}
   {
+    d_ = box_size * 0.1;
+    d_s_ =  0.5 * sqrt(pow(box_size, 2) / static_cast<float>(n_birds));
+
     if(n_birds < 3 || n_birds > 1000) { throw std::runtime_error{"Flock parameter: wrong n_birds initialization."}; }
-    if(box_size < 50 || box_size > 400) { throw std::runtime_error{"Flock parameter: wrong box_size initialization."}; }
-    if(d < 0 || d > box_size) { throw std::runtime_error{"Flock parameter: wrong d initialization."}; }
-    if(d_s < 0 || d_s > box_size) { throw std::runtime_error{"Flock parameter: wrong d_s initialization."}; }
+    if(box_size < 50 || box_size > 200) { throw std::runtime_error{"Flock parameter: wrong box_size initialization."}; }
+    if(d_ < 0 || d_ > box_size * 0.5) { throw std::runtime_error{"Flock parameter: wrong d initialization."}; }
+    if(d_s_ < 0 || d_s_ > sqrt(pow(box_size, 2) / static_cast<float>(n_birds))) { throw std::runtime_error{"Flock parameter: wrong d_s initialization."}; }
     if(s < 0 || s > 1) { throw std::runtime_error{"Flock parameter: wrong s initialization."}; }
     if(a < 0 || a > 1) { throw std::runtime_error{"Flock parameter: wrong a initialization."}; }
     if(c < 0 || c > 1) { throw std::runtime_error{"Flock parameter: wrong c initialization."}; }
@@ -62,7 +62,7 @@ class Flock
   void set_random_velocities();
 
   // this method applies all flock rules to a bird and prevents it from exceeding the max_bird_velocity parameter
-  void calc_bird_velocity(Bird& reference_bird);
+  void calc_bird_velocity(Bird& reference_bird) const;
 
  public:
   FParametres par_;

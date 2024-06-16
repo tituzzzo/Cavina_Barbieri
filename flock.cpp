@@ -2,9 +2,7 @@
 
 #include <time.h>
 #include <cassert>
-#include <cmath>
 #include <random>
-#include <stdexcept>
 
 #include <iostream>
 
@@ -63,7 +61,7 @@ void Flock::set_random_velocities()
 }
 
 // this method applies all flock rules to a bird and prevents it from exceeding the max_bird_velocity
-void Flock::calc_bird_velocity(Bird& reference_bird)
+void Flock::calc_bird_velocity(Bird& reference_bird) const
 {
   Vector2D new_velocity;
   new_velocity = reference_bird.get_velocity() + separation_rule(reference_bird, par_.d_s_, par_.s_, birds_) + alignment_rule(reference_bird, par_.d_, par_.a_, birds_) + cohesion_rule(reference_bird, par_.d_, par_.c_, birds_);
@@ -74,13 +72,11 @@ void Flock::calc_bird_velocity(Bird& reference_bird)
   } else {
     reference_bird.set_velocity(new_velocity);
   }
-
-  assert(new_velocity.norm() <= par_.max_bird_velocity_ + 0.01);
 }
 
 Bird const& Flock::get_bird(const int bird_index) const
 {
-  if (bird_index < 0 || bird_index > static_cast<int>(birds_.size())) {
+  if (bird_index < 0 || bird_index > static_cast<int>(birds_.size() - 1)) {
     throw std::runtime_error{"In function get_bird: bird_index out of range."};
   }
   return birds_[static_cast<index_t>(bird_index)];
@@ -97,28 +93,39 @@ void Flock::update_birds_position(const double delta_time)
     throw std::runtime_error{"In function update_bird_position: negative value of delta_time is not allowed."};
   }
 
+  // check parameters correctness before each flock update
+  // significantly decreases preformance, used for debug
+  assert(par_.n_birds_ >= 3 || par_.n_birds_ <= 1000);
+  assert(par_.box_size_ >= 50 || par_.box_size_ <= 200);
+  assert(par_.d_ >= 0 || par_.d_ <= par_.box_size_ * 0.5);
+  assert(par_.d_s_ >= 0 || par_.d_s_ <= sqrt(pow(par_.box_size_, 2) / static_cast<float>(par_.n_birds_)));
+  assert(par_.s_ >= 0 || par_.s_ <= 1);
+  assert(par_.a_ >= 0 || par_.a_ <= 1);
+  assert(par_.c_ >= 0 || par_.c_ <= 1);
+  assert(par_.max_bird_velocity_ >= 10 || par_.max_bird_velocity_ <= 500);
+
   for (Bird& bird : birds_) {
     calc_bird_velocity(bird);
     Vector2D new_position{};
     Vector2D old_position = bird.get_position();
     Vector2D delta_space  = bird.get_velocity() * delta_time;
     new_position          = old_position + delta_space;
-    bird.set_position(new_position);
 
-    // if a bird leaves the box area it will be moved to the opposite side of the box area with the same velocity direction
+    // if a bird leaves the box area it will be moved to the opposite side of the box area
     if (new_position.x_ > par_.box_size_) {
-      bird.set_position({new_position.x_ - par_.box_size_, new_position.y_});
+      new_position = {new_position.x_ - par_.box_size_, new_position.y_};
     }
     if (new_position.x_ < 0.) {
-      bird.set_position({new_position.x_ + par_.box_size_, new_position.y_});
+      new_position = {new_position.x_ + par_.box_size_, new_position.y_};
     }
     if (new_position.y_ > par_.box_size_) {
-      bird.set_position({new_position.x_, new_position.y_ - par_.box_size_});
+      new_position = {new_position.x_, new_position.y_ - par_.box_size_};
     }
     if (new_position.y_ < 0.) {
-      bird.set_position({new_position.x_, new_position.y_ + par_.box_size_});
+      new_position = {new_position.x_, new_position.y_ + par_.box_size_};
     }
-    std::cout << bird.get_position().x_ << " " << par_.box_size_ << "\n";
+    bird.set_position(new_position);
+
     assert(bird.get_position().x_ <= par_.box_size_ + 0.01 && bird.get_position().x_ > -0.01);
     assert(bird.get_position().y_ <= par_.box_size_ + 0.01 && bird.get_position().y_ > -0.01);
   }
@@ -208,7 +215,7 @@ Vector2D separation_rule(Bird const& reference_bird, const double d_s, const dou
     Vector2D distance             = second_bird_position - reference_bird.get_position();
     birds_positions_sum += distance;
   }
-  return birds_positions_sum * (-s_factor);
+  return birds_positions_sum * (-s_factor * 10);
 }
 
 Vector2D alignment_rule(Bird const& reference_bird, const double d, const double a_factor, std::vector<Bird> const& birds)
@@ -220,7 +227,7 @@ Vector2D alignment_rule(Bird const& reference_bird, const double d, const double
   if (N < 2) {
     return {0., 0.};
   }
-  
+
   Vector2D birds_velocities_sum{};
   for (auto it{near_birds_indexes.begin()}, last{near_birds_indexes.end()}; it != last; ++it) {
     birds_velocities_sum += birds[static_cast<index_t>(*it)].get_velocity();

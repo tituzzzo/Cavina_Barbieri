@@ -7,10 +7,7 @@
 #include "bird.hpp"
 #include "flock.hpp"
 #include "vector2d.hpp"
-
-// REQUIRE controllo su variabili locali propedeutiche al test
-// CHECK per testare ritnorni di funzione
-// CHECK_THROWS per testare error handling
+#include "gui.hpp"
 
 TEST_CASE("Testing Vector2D")
 {
@@ -167,5 +164,40 @@ TEST_CASE("Testing flock.hpp functions")
     CHECK(average_distance_stat.mean_ == doctest::Approx(3.17).epsilon(0.01));
     CHECK(average_distance_stat.sigma_ == doctest::Approx(0.74).epsilon(0.01));
     CHECK(average_distance_stat.mean_err_ == doctest::Approx(0.30).epsilon(0.01));
+  }
+}
+
+TEST_CASE("Testing gui.cpp function")
+{
+  SUBCASE("Testing round_two_dec_digits function")
+  {
+    std::string test;
+    double value{123.1234};
+    gp::round_two_dec_digits(test, value);
+    CHECK(test == "123.12");
+
+    value = 123.567;
+    test.clear();
+    gp::round_two_dec_digits(test, value);
+    CHECK(test == "123.57");
+
+    value = 123.000;
+    test.clear();
+    gp::round_two_dec_digits(test, value);
+    CHECK(test == "123.00");
+
+    value = 0.000;
+    test.clear();
+    gp::round_two_dec_digits(test, value);
+    CHECK(test == "0.00");
+  }
+
+  SUBCASE("Testing check_given_input_correctness function")
+  {
+    CHECK(gp::check_given_input_correctness("2", 1, 3));
+    CHECK(gp::check_given_input_correctness("1", 1, 3));
+    CHECK(gp::check_given_input_correctness("3", 1, 3));
+    CHECK(!gp::check_given_input_correctness("1", 2, 3));
+    CHECK(!gp::check_given_input_correctness("3", 1, 2));
   }
 }
