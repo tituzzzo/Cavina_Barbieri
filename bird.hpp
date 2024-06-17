@@ -13,9 +13,10 @@ class Bird
   Vector2D velocity_;
 
  public:
-  Bird(int index, Vector2D const& position)
+  Bird(int index, Vector2D const& position, Vector2D const& velocity = {0., 0.})
       : index_{index}
       , position_{position}
+      , velocity_{velocity}
   {}
 
   bool operator!=(Bird const&) const;

@@ -246,6 +246,8 @@ inline void FlockInputGUI::get_input()
       menu.onEvent(event);
       if (event.type == sf::Event::Closed) {
         window.close();
+        delete nb_textbox;
+        delete bs_textbox;
       }
     }
 
@@ -321,7 +323,8 @@ inline void FlockSimulationGUI::show()
   d_slider->setStep(2);
   d_slider->setValue(static_cast<int>(flock_.par_.d_));
   // set maximum d value to half the box_size
-  d_slider->setCallback([&]() { flock_.par_.d_ = d_slider->getValue() * (flock_.par_.box_size_ * 0.005); });
+  const double max_d_s = sqrt(pow(flock_.par_.box_size_, 2) / static_cast<float>(flock_.par_.n_birds_));
+  d_slider->setCallback([&]() { flock_.par_.d_ = max_d_s + d_slider->getValue() * (flock_.par_.box_size_ * 0.005); });
   form->addRow("d distance:", d_slider);
 
   // d_s parameter slider
@@ -329,7 +332,7 @@ inline void FlockSimulationGUI::show()
   d_s_slider->setStep(2);
   d_s_slider->setValue(static_cast<int>(flock_.par_.d_s_));
   // set maximum d_s value to sqrt(box_size^2 / n_birds)
-  d_s_slider->setCallback([&]() { flock_.par_.d_s_ = d_s_slider->getValue() * 0.01 * sqrt(pow(flock_.par_.box_size_, 2) / static_cast<float>(flock_.par_.n_birds_)); });
+  d_s_slider->setCallback([&]() { flock_.par_.d_s_ = d_s_slider->getValue() * 0.01 * max_d_s; });
   form->addRow("d_s distance:", d_s_slider);
 
   // s parameter slider
@@ -406,6 +409,14 @@ inline void FlockSimulationGUI::show()
       menu.onEvent(event);
       if (event.type == sf::Event::Closed) {
         window.close();
+        delete d_slider;
+        delete d_s_slider;
+        delete d_checkbox;
+        delete d_s_checkbox;
+        delete s_slider;
+        delete a_slider;
+        delete c_slider;
+        delete mv_slider;
       }
     }
 

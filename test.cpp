@@ -6,8 +6,8 @@
 // file to test
 #include "bird.hpp"
 #include "flock.hpp"
-#include "vector2d.hpp"
 #include "gui.hpp"
+#include "vector2d.hpp"
 
 TEST_CASE("Testing Vector2D")
 {
@@ -57,28 +57,20 @@ TEST_CASE("Testing flock.hpp functions")
   std::vector<fl::Bird> flock_test{bird0, bird1, bird2, bird3};
   REQUIRE(flock_test.size() == 4);
 
-  SUBCASE("Testing find_birds_within_distance function")
-  {
-    std::vector<int> birds_within_distance;
-    find_birds_within_distance(birds_within_distance, bird0, 2.5, flock_test);
-    CHECK(birds_within_distance.size() == 1);
-    birds_within_distance.clear();
-    find_birds_within_distance(birds_within_distance, bird0, 3., flock_test);
-    CHECK(birds_within_distance.size() == 2);
-    birds_within_distance.clear();
-    find_birds_within_distance(birds_within_distance, bird0, 5., flock_test);
-    CHECK(birds_within_distance.size() == 3);
-  }
- 
   SUBCASE("Testing separation_rule function")
   {
     double s_factor = 1.;
-    CHECK(fl::Vector2D{-2., 0.} == separation_rule(bird0, 2.5, s_factor, flock_test));
+    CHECK(fl::Vector2D{-5, 0.} == separation_rule(bird0, 2.5, s_factor, flock_test));
     s_factor = 0.5;
-    CHECK(fl::Vector2D{-1., 0.} == separation_rule(bird0, 2.5, s_factor, flock_test));
+    CHECK(fl::Vector2D{-2.5, 0.} == separation_rule(bird0, 2.5, s_factor, flock_test));
     s_factor = 1.;
-    CHECK(fl::Vector2D{-2., -3.} == separation_rule(bird0, 3., s_factor, flock_test));
-    CHECK(fl::Vector2D{-5., -6.} == separation_rule(bird0, 5., s_factor, flock_test));
+    fl::Vector2D temp{separation_rule(bird0, 3., s_factor, flock_test)};
+    CHECK(temp.x_ == -5.);
+    CHECK(temp.y_ == doctest::Approx(-3.33).epsilon(0.01));
+
+    temp = separation_rule(bird0, 5., s_factor, flock_test);
+    CHECK(temp.x_ == doctest::Approx(-6.66).epsilon(0.01));
+    CHECK(temp.y_ == -5.);
   }
 
   SUBCASE("Testing alignment_rule function")
@@ -101,13 +93,13 @@ TEST_CASE("Testing flock.hpp functions")
   SUBCASE("Testing mass_center function")
   {
     fl::Vector2D mass_center_calc{};
-    mass_center_calc = calc_mass_center(std::vector<int>{1}, flock_test);
+    mass_center_calc = calc_mass_center(bird0, 2.5, flock_test);
     CHECK(fl::Vector2D{3, 1} == mass_center_calc);
 
-    mass_center_calc = calc_mass_center(std::vector<int>{1, 3}, flock_test);
+    mass_center_calc = calc_mass_center(bird0, 3.5, flock_test);
     CHECK(fl::Vector2D{2, 2.5} == mass_center_calc);
 
-    mass_center_calc = calc_mass_center(std::vector<int>{1, 2, 3}, flock_test);
+    mass_center_calc = calc_mass_center(bird0, 5., flock_test);
     CHECK(mass_center_calc.x_ == doctest::Approx(2.66).epsilon(0.01));
     CHECK(mass_center_calc.y_ == 3.);
   }

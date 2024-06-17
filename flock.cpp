@@ -95,14 +95,14 @@ void Flock::update_birds_position(const double delta_time)
 
   // check parameters correctness before each flock update
   // significantly decreases preformance, used for debug
-  assert(par_.n_birds_ >= 3 || par_.n_birds_ <= 1000);
-  assert(par_.box_size_ >= 50 || par_.box_size_ <= 200);
-  assert(par_.d_ >= 0 || par_.d_ <= par_.box_size_ * 0.5);
-  assert(par_.d_s_ >= 0 || par_.d_s_ <= sqrt(pow(par_.box_size_, 2) / static_cast<float>(par_.n_birds_)));
-  assert(par_.s_ >= 0 || par_.s_ <= 1);
-  assert(par_.a_ >= 0 || par_.a_ <= 1);
-  assert(par_.c_ >= 0 || par_.c_ <= 1);
-  assert(par_.max_bird_velocity_ >= 10 || par_.max_bird_velocity_ <= 500);
+  assert(par_.n_birds_ >= 3 && par_.n_birds_ <= 1000);
+  assert(par_.box_size_ >= 50 && par_.box_size_ <= 200);
+  assert(par_.d_ >= par_.d_s_);
+  assert(par_.d_s_ >= 0 && par_.d_s_ <= sqrt(pow(par_.box_size_, 2) / static_cast<float>(par_.n_birds_)));
+  assert(par_.s_ >= 0 && par_.s_ <= 1);
+  assert(par_.a_ >= 0 && par_.a_ <= 1);
+  assert(par_.c_ >= 0 && par_.c_ <= 1);
+  assert(par_.max_bird_velocity_ >= 10 && par_.max_bird_velocity_ <= 500);
 
   for (Bird& bird : birds_) {
     calc_bird_velocity(bird);
@@ -184,18 +184,6 @@ Statistics calc_average_bird_to_bird_distance(std::vector<Bird> const& birds)
   return average_bird_to_bird_distance;
 }
 
-// this function is used by a bird to obtain the indexes of all the birds located within a radius distance
-void find_birds_within_distance(std::vector<int>& vector_to_fill, Bird const& reference_bird, const double radius_distance, std::vector<Bird> const& birds)
-{
-  for (const Bird& bird : birds) {
-    double distance{calc_bird_to_bird_distance(reference_bird, bird)};
-    if (distance <= radius_distance && bird != reference_bird) {
-      vector_to_fill.push_back(bird.get_index());
-    }
-  }
-  assert(vector_to_fill.size() <= birds.size());
-}
-
 void limit_bird_velocity_to_value(Vector2D& velocity, const double max_bird_velocity)
 {
   if (velocity.norm() > max_bird_velocity) {
@@ -207,59 +195,62 @@ void limit_bird_velocity_to_value(Vector2D& velocity, const double max_bird_velo
 
 Vector2D separation_rule(Bird const& reference_bird, const double d_s, const double s_factor, std::vector<Bird> const& birds)
 {
-  std::vector<int> near_birds_indexes{};
-  find_birds_within_distance(near_birds_indexes, reference_bird, d_s, birds);
-  Vector2D birds_positions_sum{};
-  for (auto it{near_birds_indexes.begin()}, last{near_birds_indexes.end()}; it != last; ++it) {
-    Vector2D second_bird_position = birds[static_cast<index_t>(*it)].get_position();
-    Vector2D distance             = second_bird_position - reference_bird.get_position();
-    birds_positions_sum += distance;
+  Vector2D steer{};
+  for (Bird const& bird : birds) {
+    const double d{calc_bird_to_bird_distance(reference_bird, bird)};
+    if (bird != reference_bird && d <= d_s) {
+      Vector2D diff{reference_bird.get_position() - bird.get_position()};
+      diff = diff * (1. / diff.norm());
+      diff = diff * (1. / d);
+      steer += diff;
+    }
   }
-  return birds_positions_sum * (-s_factor * 10);
+  return steer * (s_factor * 10.);
 }
 
 Vector2D alignment_rule(Bird const& reference_bird, const double d, const double a_factor, std::vector<Bird> const& birds)
 {
-  std::vector<int> near_birds_indexes;
-  find_birds_within_distance(near_birds_indexes, reference_bird, d, birds);
-
-  const int N{static_cast<int>(near_birds_indexes.size())};
-  if (N < 2) {
-    return {0., 0.};
-  }
-
   Vector2D birds_velocities_sum{};
-  for (auto it{near_birds_indexes.begin()}, last{near_birds_indexes.end()}; it != last; ++it) {
-    birds_velocities_sum += birds[static_cast<index_t>(*it)].get_velocity();
+  int n_near_birds{0};
+  for (Bird const& bird : birds) {
+    const double d_{calc_bird_to_bird_distance(reference_bird, bird)};
+    if (bird != reference_bird && d_ <= d) {
+      birds_velocities_sum += birds[static_cast<index_t>(bird.get_index())].get_velocity();
+      ++n_near_birds;
+    }
   }
-  const double f = 1. / (static_cast<double>(N));
-  Vector2D mean_bird_velocity{birds_velocities_sum * f};
 
-  return (mean_bird_velocity - reference_bird.get_velocity()) * a_factor;
+  if (n_near_birds < 2) {
+    return {0., 0.};
+  } else {
+    const double f = 1. / (static_cast<double>(n_near_birds));
+    Vector2D mean_bird_velocity{birds_velocities_sum * f};
+    return (mean_bird_velocity - reference_bird.get_velocity()) * a_factor;
+  }
 }
 
-Vector2D calc_mass_center(std::vector<int> const& near_birds_indexes, std::vector<Bird> const& birds)
+Vector2D calc_mass_center(Bird const& reference_bird, const double d, std::vector<Bird> const& birds)
 {
+  int n_near_birds{0};
   Vector2D mass_center{};
-  const int N{static_cast<int>(near_birds_indexes.size())};
-
-  for (auto it{near_birds_indexes.begin()}, last{near_birds_indexes.end()}; it != last; ++it) {
-    mass_center += birds[static_cast<index_t>(*it)].get_position();
+  for (Bird const& bird : birds) {
+    const double d_{calc_bird_to_bird_distance(reference_bird, bird)};
+    if (bird != reference_bird && d_ <= d) {
+      mass_center += birds[static_cast<index_t>(bird.get_index())].get_position();
+      ++n_near_birds;
+    }
   }
-  assert(N != 0);
-  const double f = 1. / static_cast<double>(N);
-  return mass_center * f;
+  if (n_near_birds == 0) {
+    return {0., 0.};
+  } else {
+    const double f = 1. / static_cast<double>(n_near_birds);
+    return mass_center * f;
+  }
 }
 
 Vector2D cohesion_rule(Bird const& reference_bird, const double d, const double c_factor, std::vector<Bird> const& birds)
 {
-  std::vector<int> near_birds_indexes;
-  find_birds_within_distance(near_birds_indexes, reference_bird, d, birds);
-  const int N{static_cast<int>(near_birds_indexes.size())};
-  if (N == 0) {
-    return {0., 0.};
-  }
-  Vector2D mass_center{calc_mass_center(near_birds_indexes, birds)};
+  Vector2D mass_center{calc_mass_center(reference_bird, d, birds)};
   return (mass_center - reference_bird.get_position()) * c_factor;
 }
 
