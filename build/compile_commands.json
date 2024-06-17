@@ -1,0 +1,22 @@
+[
+{
+  "directory": "/home/francesco-cavina/Cavina_Barbieri/build",
+  "command": "/usr/bin/c++    -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wshadow -Wimplicit-fallthrough -Wextra-semi -Wold-style-cast -Wreorder -g -D_GLIBCXX_ASSERTIONS -fsanitize=address,undefined -fno-omit-frame-pointer -std=c++17 -o CMakeFiles/flock_simulation.dir/main.cpp.o -c /home/francesco-cavina/Cavina_Barbieri/main.cpp",
+  "file": "/home/francesco-cavina/Cavina_Barbieri/main.cpp"
+},
+{
+  "directory": "/home/francesco-cavina/Cavina_Barbieri/build",
+  "command": "/usr/bin/c++    -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wshadow -Wimplicit-fallthrough -Wextra-semi -Wold-style-cast -Wreorder -g -D_GLIBCXX_ASSERTIONS -fsanitize=address,undefined -fno-omit-frame-pointer -std=c++17 -o CMakeFiles/flock_simulation.dir/bird.cpp.o -c /home/francesco-cavina/Cavina_Barbieri/bird.cpp",
+  "file": "/home/francesco-cavina/Cavina_Barbieri/bird.cpp"
+},
+{
+  "directory": "/home/francesco-cavina/Cavina_Barbieri/build",
+  "command": "/usr/bin/c++    -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wshadow -Wimplicit-fallthrough -Wextra-semi -Wold-style-cast -Wreorder -g -D_GLIBCXX_ASSERTIONS -fsanitize=address,undefined -fno-omit-frame-pointer -std=c++17 -o CMakeFiles/flock_simulation.dir/flock.cpp.o -c /home/francesco-cavina/Cavina_Barbieri/flock.cpp",
+  "file": "/home/francesco-cavina/Cavina_Barbieri/flock.cpp"
+},
+{
+  "directory": "/home/francesco-cavina/Cavina_Barbieri/build",
+  "command": "/usr/bin/c++    -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wshadow -Wimplicit-fallthrough -Wextra-semi -Wold-style-cast -Wreorder -g -D_GLIBCXX_ASSERTIONS -fsanitize=address,undefined -fno-omit-frame-pointer -std=c++17 -o CMakeFiles/flock_simulation.dir/vector2d.cpp.o -c /home/francesco-cavina/Cavina_Barbieri/vector2d.cpp",
+  "file": "/home/francesco-cavina/Cavina_Barbieri/vector2d.cpp"
+}
+]
