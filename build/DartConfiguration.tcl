@@ -4,14 +4,14 @@
 
 
 # Configuration directories and files
-SourceDirectory: /home/francesco-cavina/Cavina_Barbieri
-BuildDirectory: /home/francesco-cavina/Cavina_Barbieri/build
+SourceDirectory: /home/tito/Desktop/Cavina_Barbieri
+BuildDirectory: /home/tito/Desktop/Cavina_Barbieri/build
 
 # Where to place the cost data store
 CostDataFile: 
 
 # Site is something like machine.domain, i.e. pragmatic.crd
-Site: LAPTOP-L971B2HM
+Site: tito-20L8S37C0J
 
 # Build name is osname-revision-compiler, i.e. Linux-2.4.2-2smp-c++
 BuildName: Linux-c++
@@ -21,12 +21,13 @@ LabelsForSubprojects:
 
 # Submission information
 SubmitURL: http://
+SubmitInactivityTimeout: 
 
 # Dashboard start time
 NightlyStartTime: 00:00:00 EDT
 
 # Commands for the build/test/submit cycle
-ConfigureCommand: "/usr/bin/cmake" "/home/francesco-cavina/Cavina_Barbieri"
+ConfigureCommand: "/usr/bin/cmake" "/home/tito/Desktop/Cavina_Barbieri"
 MakeCommand: /usr/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}"
 DefaultCTestConfigurationType: Release
 
@@ -63,7 +64,7 @@ UpdateType: git
 
 # Compiler info
 Compiler: /usr/bin/c++
-CompilerVersion: 11.4.0
+CompilerVersion: 12.3.0
 
 # Dynamic analysis (MemCheck)
 PurifyCommand: 
