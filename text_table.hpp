@@ -12,7 +12,8 @@ class table_file_management
   std::vector<std::string> columns_;
 
  public:
-  table_file_management(std::string const& name_file, std::vector<std::string> const& columns)
+  table_file_management(std::string const& name_file,
+                        std::vector<std::string> const& columns)
       : name_file_{name_file}
       , columns_{columns}
   {}

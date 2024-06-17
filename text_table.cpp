@@ -25,12 +25,14 @@ void table_file_management::create_table() const
 }
 
 // to add a new raw
-void table_file_management::insert_row_into_table(std::vector<std::string> const& datas) const
+void table_file_management::insert_row_into_table(
+    std::vector<std::string> const& datas) const
 {
   std::ofstream file(name_file_, std::ios::out | std::ios::app);
 
   if (datas.size() > columns_.size()) {
-    throw std::runtime_error{"Number of datas inserted is major than number of columns."};
+    throw std::runtime_error{
+        "Number of datas inserted is major than number of columns."};
   }
 
   if (!file.is_open()) {

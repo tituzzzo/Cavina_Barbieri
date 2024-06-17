@@ -3,7 +3,7 @@
 
 namespace fl {
 
-struct Vector2D
+struct Vector2D 
 {
   double x_;
   double y_;

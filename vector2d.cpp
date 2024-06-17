@@ -1,7 +1,7 @@
 #include "vector2d.hpp"
 #include <cmath>
 
-namespace fl {
+namespace fl { 
 
 double Vector2D::norm() const
 {

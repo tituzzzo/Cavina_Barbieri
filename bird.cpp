@@ -29,7 +29,7 @@ Vector2D const& Bird::get_velocity() const
 
 void Bird::set_velocity(Vector2D const& new_velocity)
 {
-  velocity_ = new_velocity;
+  velocity_ = new_velocity; 
 }
 
 } // namespace fl

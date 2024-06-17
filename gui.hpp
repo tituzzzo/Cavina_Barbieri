@@ -44,7 +44,8 @@ class FlockSimulationGUI
   fl::Statistics average_velocity_norm_;
 
  public:
-  FlockSimulationGUI(const int w, const int h, const double delta_time, fl::Flock& flock)
+  FlockSimulationGUI(const int w, const int h, const double delta_time,
+                     fl::Flock& flock)
       : w_{w}
       , h_{h}
       , delta_time_{delta_time}
@@ -73,19 +74,24 @@ class FlockSimulationGUI
     for (int i{0}; i < flock_.par_.n_birds_; ++i) {
       sf::Sprite bird_shape;
       bird_shape.setTexture(bird_texture_);
-      bird_shape.setOrigin(static_cast<float>(bird_texture_.getSize().x / 2), static_cast<float>(bird_texture_.getSize().y / 2));
+      bird_shape.setOrigin(static_cast<float>(bird_texture_.getSize().x / 2),
+                           static_cast<float>(bird_texture_.getSize().y / 2));
       const float scale{static_cast<float>(0.01 * zoom_)};
       bird_shape.setScale(scale, scale);
       bird_shapes_.push_back(bird_shape);
 
       sf::Sprite d_radius_shape;
       d_radius_shape.setTexture(empty_circle);
-      d_radius_shape.setOrigin(static_cast<float>(empty_circle.getSize().x / 2), static_cast<float>(empty_circle.getSize().y / 2));
+      d_radius_shape.setOrigin(
+          static_cast<float>(empty_circle.getSize().x / 2),
+          static_cast<float>(empty_circle.getSize().y / 2));
       d_radius_shapes_.push_back(d_radius_shape);
 
       sf::Sprite d_s_radius_shape;
       d_s_radius_shape.setTexture(empty_circle_2);
-      d_s_radius_shape.setOrigin(static_cast<float>(empty_circle_2.getSize().x / 2), static_cast<float>(empty_circle_2.getSize().y / 2));
+      d_s_radius_shape.setOrigin(
+          static_cast<float>(empty_circle_2.getSize().x / 2),
+          static_cast<float>(empty_circle_2.getSize().y / 2));
       d_s_radius_shapes_.push_back(d_s_radius_shape);
     }
   }
@@ -119,14 +125,20 @@ inline sf::Color hex2color(const std::string& hexcolor)
   sf::Color color = sf::Color::Black;
   if (hexcolor.size() == 7) // #ffffff
   {
-    color.r = static_cast<sf::Uint8>(strtoul(hexcolor.substr(1, 2).c_str(), NULL, 16));
-    color.g = static_cast<sf::Uint8>(strtoul(hexcolor.substr(3, 2).c_str(), NULL, 16));
-    color.b = static_cast<sf::Uint8>(strtoul(hexcolor.substr(5, 2).c_str(), NULL, 16));
+    color.r = static_cast<sf::Uint8>(
+        strtoul(hexcolor.substr(1, 2).c_str(), NULL, 16));
+    color.g = static_cast<sf::Uint8>(
+        strtoul(hexcolor.substr(3, 2).c_str(), NULL, 16));
+    color.b = static_cast<sf::Uint8>(
+        strtoul(hexcolor.substr(5, 2).c_str(), NULL, 16));
   } else if (hexcolor.size() == 4) // #fff
   {
-    color.r = static_cast<sf::Uint8>(strtoul(hexcolor.substr(1, 1).c_str(), NULL, 16) * 17);
-    color.g = static_cast<sf::Uint8>(strtoul(hexcolor.substr(2, 1).c_str(), NULL, 16) * 17);
-    color.b = static_cast<sf::Uint8>(strtoul(hexcolor.substr(3, 1).c_str(), NULL, 16) * 17);
+    color.r = static_cast<sf::Uint8>(
+        strtoul(hexcolor.substr(1, 1).c_str(), NULL, 16) * 17);
+    color.g = static_cast<sf::Uint8>(
+        strtoul(hexcolor.substr(2, 1).c_str(), NULL, 16) * 17);
+    color.b = static_cast<sf::Uint8>(
+        strtoul(hexcolor.substr(3, 1).c_str(), NULL, 16) * 17);
   }
   return color;
 }
@@ -154,16 +166,21 @@ inline void round_two_dec_digits(std::string& input_string, double value)
   }
 }
 
-inline void set_text_settings(sf::Text& text, std::string const& string, unsigned int const char_size, sf::Font const& font, sf::Color const& color, fl::Vector2D const& position)
+inline void set_text_settings(sf::Text& text, std::string const& string,
+                              unsigned int const char_size,
+                              sf::Font const& font, sf::Color const& color,
+                              fl::Vector2D const& position)
 {
   text.setFont(font);
   text.setString(string);
   text.setCharacterSize(char_size);
   text.setFillColor(color);
-  text.setPosition(static_cast<float>(position.x_), static_cast<float>(position.y_));
+  text.setPosition(static_cast<float>(position.x_),
+                   static_cast<float>(position.y_));
 }
 
-inline bool check_given_input_correctness(std::string const& input, const int a, const int b)
+inline bool check_given_input_correctness(std::string const& input, const int a,
+                                          const int b)
 {
   for (size_t i{0}; i < input.size(); ++i) {
     if (isdigit(input[i]) == 0) {
@@ -183,11 +200,14 @@ inline bool check_given_input_correctness(std::string const& input, const int a,
 inline void FlockInputGUI::get_input()
 {
   // create window
-  sf::RenderWindow window(sf::VideoMode(static_cast<unsigned int>(w_), static_cast<unsigned int>(h_)), "Flock Simulator Input", sf::Style::Close);
+  sf::RenderWindow window(sf::VideoMode(static_cast<unsigned int>(w_),
+                                        static_cast<unsigned int>(h_)),
+                          "Flock Simulator Input", sf::Style::Close);
   window.setFramerateLimit(60);
 
   // sfml-widgets library code needed to create a menu widget (provided by the creator)
-  Theme defaultTheme = {hex2color("#dddbde"), "third_party/sfml-widgets/demo/texture-default.png"};
+  Theme defaultTheme = {hex2color("#dddbde"),
+                        "third_party/sfml-widgets/demo/texture-default.png"};
   gui::Menu menu(window);
   gui::Theme::loadFont("graphics/font.ttf");
   gui::Theme::loadTexture(defaultTheme.texturePath);
@@ -209,7 +229,8 @@ inline void FlockInputGUI::get_input()
   menu.setPosition(100, 100);
 
   sf::Text title;
-  set_text_settings(title, "FLOCK SIMULATOR", 70, font_, sf::Color::Black, {10, 10});
+  set_text_settings(title, "FLOCK SIMULATOR", 70, font_, sf::Color::Black,
+                    {10, 10});
 
   // n_birds parameter textbox
   gui::TextBox* nb_textbox = new gui::TextBox();
@@ -231,7 +252,8 @@ inline void FlockInputGUI::get_input()
   menu.addButton("Start Simulation", [&]() {
     std::string nb_text = nb_textbox->getText().toAnsiString();
     std::string bs_text = bs_textbox->getText().toAnsiString();
-    if (check_given_input_correctness(nb_text, 3, 1000) && check_given_input_correctness(bs_text, 50, 200)) {
+    if (check_given_input_correctness(nb_text, 3, 1000)
+        && check_given_input_correctness(bs_text, 50, 200)) {
       int n_birds{std::stoi(nb_text)};
       int box_size{std::stoi(bs_text)};
       input_ = {n_birds, box_size};
@@ -263,29 +285,39 @@ inline void FlockInputGUI::get_input()
   }
 }
 
-inline void FlockSimulationGUI::update_shapes_positions(sf::RenderWindow& window)
+inline void
+FlockSimulationGUI::update_shapes_positions(sf::RenderWindow& window)
 {
   using index_t = std::vector<sf::Sprite>::size_type;
 
   for (fl::Bird const& bird : flock_.get_birds()) {
     // update bird_shapes positions
     const int i = bird.get_index();
-    bird_shapes_[static_cast<index_t>(i)].setPosition(static_cast<float>(bird.get_position().x_ * zoom_), static_cast<float>(bird.get_position().y_ * zoom_));
-    bird_shapes_[static_cast<index_t>(i)].setRotation(static_cast<float>(fl::get_bird_direction(flock_.get_bird(i), true) + 90.));
+    bird_shapes_[static_cast<index_t>(i)].setPosition(
+        static_cast<float>(bird.get_position().x_ * zoom_),
+        static_cast<float>(bird.get_position().y_ * zoom_));
+    bird_shapes_[static_cast<index_t>(i)].setRotation(static_cast<float>(
+        fl::get_bird_direction(flock_.get_bird(i), true) + 90.));
     window.draw(bird_shapes_[static_cast<index_t>(i)]);
 
     if (show_d_) {
       // update d_radius_shapes positions
-      d_radius_shapes_[static_cast<index_t>(i)].setPosition(static_cast<float>(bird.get_position().x_ * zoom_), static_cast<float>(bird.get_position().y_ * zoom_));
-      const float scale{static_cast<float>(flock_.par_.d_ * zoom_ / empty_circle.getSize().x)};
+      d_radius_shapes_[static_cast<index_t>(i)].setPosition(
+          static_cast<float>(bird.get_position().x_ * zoom_),
+          static_cast<float>(bird.get_position().y_ * zoom_));
+      const float scale{static_cast<float>(flock_.par_.d_ * zoom_
+                                           / empty_circle.getSize().x)};
       d_radius_shapes_[static_cast<index_t>(i)].setScale(scale, scale);
       window.draw(d_radius_shapes_[static_cast<index_t>(i)]);
     }
 
     if (show_d_s_) {
       // update d_radius_shapes positions
-      d_s_radius_shapes_[static_cast<index_t>(i)].setPosition(static_cast<float>(bird.get_position().x_ * zoom_), static_cast<float>(bird.get_position().y_ * zoom_));
-      const float scale{static_cast<float>(flock_.par_.d_s_ * zoom_ / empty_circle_2.getSize().x)};
+      d_s_radius_shapes_[static_cast<index_t>(i)].setPosition(
+          static_cast<float>(bird.get_position().x_ * zoom_),
+          static_cast<float>(bird.get_position().y_ * zoom_));
+      const float scale{static_cast<float>(flock_.par_.d_s_ * zoom_
+                                           / empty_circle_2.getSize().x)};
       d_s_radius_shapes_[static_cast<index_t>(i)].setScale(scale, scale);
       window.draw(d_s_radius_shapes_[static_cast<index_t>(i)]);
     }
@@ -295,11 +327,15 @@ inline void FlockSimulationGUI::update_shapes_positions(sf::RenderWindow& window
 inline void FlockSimulationGUI::show()
 {
   // create window
-  sf::RenderWindow window(sf::VideoMode(static_cast<unsigned int>(w_), static_cast<unsigned int>(h_)), "Flock Simulation", sf::Style::Close);
+  sf::RenderWindow window(sf::VideoMode(static_cast<unsigned int>(w_),
+                                        static_cast<unsigned int>(h_)),
+                          "Flock Simulation", sf::Style::Close);
   window.setFramerateLimit(60);
 
-  // sfml-widgets library code needed to create a menu widget (provided by the creator)
-  Theme defaultTheme = {hex2color("#dddbde"), "third_party/sfml-widgets/demo/texture-default.png"};
+  // sfml-widgets library code needed to create a menu widget (provided by the
+  // creator)
+  Theme defaultTheme = {hex2color("#dddbde"),
+                        "third_party/sfml-widgets/demo/texture-default.png"};
   gui::Menu menu(window);
   gui::Theme::loadFont("graphics/font.ttf");
   gui::Theme::loadTexture(defaultTheme.texturePath);
@@ -325,8 +361,12 @@ inline void FlockSimulationGUI::show()
   d_slider->setStep(2);
   d_slider->setValue(static_cast<int>(flock_.par_.d_));
   // set maximum d value to half the box_size
-  const double max_d_s = sqrt(pow(flock_.par_.box_size_, 2) / static_cast<float>(flock_.par_.n_birds_));
-  d_slider->setCallback([&]() { flock_.par_.d_ = max_d_s + d_slider->getValue() * (flock_.par_.box_size_ * 0.005); });
+  const double max_d_s = sqrt(pow(flock_.par_.box_size_, 2)
+                              / static_cast<float>(flock_.par_.n_birds_));
+  d_slider->setCallback([&]() {
+    flock_.par_.d_ =
+        max_d_s + d_slider->getValue() * (flock_.par_.box_size_ * 0.005);
+  });
   form->addRow("d distance:", d_slider);
 
   // d_s parameter slider
@@ -334,35 +374,42 @@ inline void FlockSimulationGUI::show()
   d_s_slider->setStep(2);
   d_s_slider->setValue(static_cast<int>(flock_.par_.d_s_));
   // set maximum d_s value to sqrt(box_size^2 / n_birds)
-  d_s_slider->setCallback([&]() { flock_.par_.d_s_ = d_s_slider->getValue() * 0.01 * max_d_s; });
+  d_s_slider->setCallback(
+      [&]() { flock_.par_.d_s_ = d_s_slider->getValue() * 0.01 * max_d_s; });
   form->addRow("d_s distance:", d_s_slider);
 
   // s parameter slider
   gui::Slider* s_slider = new gui::Slider();
   s_slider->setStep(2);
   s_slider->setValue(static_cast<int>(flock_.par_.s_ * 100));
-  s_slider->setCallback([&]() { flock_.par_.s_ = 0.01 * s_slider->getValue(); });
+  s_slider->setCallback(
+      [&]() { flock_.par_.s_ = 0.01 * s_slider->getValue(); });
   form->addRow("s par:", s_slider);
 
   // a parameter slider
   gui::Slider* a_slider = new gui::Slider();
   a_slider->setStep(2);
   a_slider->setValue(static_cast<int>(flock_.par_.a_ * 100));
-  a_slider->setCallback([&]() { flock_.par_.a_ = 0.001 * a_slider->getValue(); });
+  a_slider->setCallback(
+      [&]() { flock_.par_.a_ = 0.001 * a_slider->getValue(); });
   form->addRow("a par:", a_slider);
 
   // c parameter slider
   gui::Slider* c_slider = new gui::Slider();
   c_slider->setStep(2);
   c_slider->setValue(static_cast<int>(flock_.par_.c_ * 100));
-  c_slider->setCallback([&]() { flock_.par_.c_ = 0.01 * c_slider->getValue(); });
+  c_slider->setCallback(
+      [&]() { flock_.par_.c_ = 0.01 * c_slider->getValue(); });
   form->addRow("c par:", c_slider);
 
   // max_bird_velocity parameter slider
   gui::Slider* mv_slider = new gui::Slider();
   mv_slider->setStep(5);
-  mv_slider->setValue(static_cast<int>((flock_.par_.max_bird_velocity_ - 40) * (1. / 5.)));
-  mv_slider->setCallback([&]() { flock_.par_.max_bird_velocity_ = mv_slider->getValue() * 4. + 100.; });
+  mv_slider->setValue(
+      static_cast<int>((flock_.par_.max_bird_velocity_ - 40) * (1. / 5.)));
+  mv_slider->setCallback([&]() {
+    flock_.par_.max_bird_velocity_ = mv_slider->getValue() * 4. + 100.;
+  });
   form->addRow("max_bird_velocity:", mv_slider);
 
   // d checkbox
@@ -405,7 +452,8 @@ inline void FlockSimulationGUI::show()
   menu_background.setFillColor(sf::Color::White);
 
   // create a text table to store data in a .txt file
-  std::vector<std::string> columns{"Average Velocity", "Average distance", "Time"};
+  std::vector<std::string> columns{"Average Velocity", "Average distance",
+                                   "Time"};
   tb::table_file_management text_file("statistics_at_time_table.txt", columns);
   text_file.create_table();
   double time{0.};
@@ -428,17 +476,20 @@ inline void FlockSimulationGUI::show()
     update_shapes_positions(window);
 
     // realtime statistics on window and statistics data saved on a .txt file
-    average_bird_to_bird_distance_ = fl::calc_average_bird_to_bird_distance(flock_.get_birds());
-    average_velocity_norm_         = fl::calc_average_velocity_norm(flock_.get_birds());
+    average_bird_to_bird_distance_ =
+        fl::calc_average_bird_to_bird_distance(flock_.get_birds());
+    average_velocity_norm_ = fl::calc_average_velocity_norm(flock_.get_birds());
 
     std::string window_string;
     std::string average_distance;
     std::string average_velocity;
     std::vector<std::string> row_to_insert_into_table;
 
-    round_two_dec_digits(average_distance, average_bird_to_bird_distance_.mean_);
+    round_two_dec_digits(average_distance,
+                         average_bird_to_bird_distance_.mean_);
     average_distance.append(" +/- ");
-    round_two_dec_digits(average_distance, average_bird_to_bird_distance_.mean_err_);
+    round_two_dec_digits(average_distance,
+                         average_bird_to_bird_distance_.mean_err_);
     row_to_insert_into_table.push_back(average_distance);
 
     window_string.append("Average bird-bird distance:     ");
@@ -460,19 +511,27 @@ inline void FlockSimulationGUI::show()
     text_file.insert_row_into_table(row_to_insert_into_table);
 
     // update all labels
-    set_text_settings(statistics_text, window_string, 20, font_, sf::Color::Black, {1020, 400});
+    set_text_settings(statistics_text, window_string, 20, font_,
+                      sf::Color::Black, {1020, 400});
     window.draw(statistics_text);
-    set_text_settings(d_slider_label, std::to_string(flock_.par_.d_), 11, font_, sf::Color::Black, {1315, 15});
+    set_text_settings(d_slider_label, std::to_string(flock_.par_.d_), 11, font_,
+                      sf::Color::Black, {1315, 15});
     window.draw(d_slider_label);
-    set_text_settings(d_s_slider_label, std::to_string(flock_.par_.d_s_), 11, font_, sf::Color::Black, {1315, 47});
+    set_text_settings(d_s_slider_label, std::to_string(flock_.par_.d_s_), 11,
+                      font_, sf::Color::Black, {1315, 47});
     window.draw(d_s_slider_label);
-    set_text_settings(s_slider_label, std::to_string(flock_.par_.s_), 11, font_, sf::Color::Black, {1315, 79});
+    set_text_settings(s_slider_label, std::to_string(flock_.par_.s_), 11, font_,
+                      sf::Color::Black, {1315, 79});
     window.draw(s_slider_label);
-    set_text_settings(a_slider_label, std::to_string(flock_.par_.a_), 11, font_, sf::Color::Black, {1315, 109});
+    set_text_settings(a_slider_label, std::to_string(flock_.par_.a_), 11, font_,
+                      sf::Color::Black, {1315, 109});
     window.draw(a_slider_label);
-    set_text_settings(c_slider_label, std::to_string(flock_.par_.c_), 11, font_, sf::Color::Black, {1315, 141});
+    set_text_settings(c_slider_label, std::to_string(flock_.par_.c_), 11, font_,
+                      sf::Color::Black, {1315, 141});
     window.draw(c_slider_label);
-    set_text_settings(max_vel_slider_label, std::to_string(flock_.par_.max_bird_velocity_), 11, font_, sf::Color::Black, {1310, 173});
+    set_text_settings(max_vel_slider_label,
+                      std::to_string(flock_.par_.max_bird_velocity_), 11, font_,
+                      sf::Color::Black, {1310, 173});
     window.draw(max_vel_slider_label);
 
     window.display();

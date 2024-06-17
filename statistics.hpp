@@ -3,7 +3,7 @@
 
 namespace fl {
 
-struct Statistics
+struct Statistics 
 {
   double mean_;
   double sigma_;

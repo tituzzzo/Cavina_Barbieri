@@ -10,7 +10,7 @@ class Bird
  private:
   const int index_;
   Vector2D position_;
-  Vector2D velocity_;
+  Vector2D velocity_; 
 
  public:
   Bird(int index, Vector2D const& position, Vector2D const& velocity = {0., 0.})

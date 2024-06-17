@@ -14,7 +14,7 @@ int main()
     return EXIT_SUCCESS;
 
   } catch (std::runtime_error const& e) {
-    std::cerr << e.what() << '\n';
+    std::cerr << e.what() << '\n'; 
 
     return EXIT_FAILURE;
   }
