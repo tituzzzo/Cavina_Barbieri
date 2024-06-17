@@ -1,11 +1,13 @@
 #include "flock.hpp"
 #include "statistics.hpp"
+#include "text_table.hpp"
 
 #include <Gui/Gui.hpp>
 #include <Gui/Theme.hpp>
 #include <SFML/Graphics.hpp>
 
 #include <ctype.h>
+#include <array>
 #include <cassert>
 #include <cmath>
 #include <string>
@@ -402,6 +404,12 @@ inline void FlockSimulationGUI::show()
   menu_background.setPosition(1000, 0);
   menu_background.setFillColor(sf::Color::White);
 
+  // create a text table to store data in a .txt file
+  std::vector<std::string> columns{"Average Velocity", "Average distance", "Time"};
+  tb::table_file_management text_file("statistics_at_time_table.txt", columns);
+  text_file.create_table();
+  double time{0.};
+
   while (window.isOpen()) {
     sf::Event event;
     while (window.pollEvent(event)) {
@@ -409,14 +417,6 @@ inline void FlockSimulationGUI::show()
       menu.onEvent(event);
       if (event.type == sf::Event::Closed) {
         window.close();
-        delete d_slider;
-        delete d_s_slider;
-        delete d_checkbox;
-        delete d_s_checkbox;
-        delete s_slider;
-        delete a_slider;
-        delete c_slider;
-        delete mv_slider;
       }
     }
 
@@ -427,22 +427,40 @@ inline void FlockSimulationGUI::show()
 
     update_shapes_positions(window);
 
-    // realtime statistics
+    // realtime statistics on window and statistics data saved on a .txt file
     average_bird_to_bird_distance_ = fl::calc_average_bird_to_bird_distance(flock_.get_birds());
-    std::string s;
-    s.append("Average bird-bird distance:     ");
-    round_two_dec_digits(s, average_bird_to_bird_distance_.mean_);
-    s.append(" +/- ");
-    round_two_dec_digits(s, average_bird_to_bird_distance_.mean_err_);
-    s.append("\n");
-    s.append("Average bird velocity:          ");
-    average_velocity_norm_ = fl::calc_average_velocity_norm(flock_.get_birds());
-    round_two_dec_digits(s, average_velocity_norm_.mean_);
-    s.append(" +/- ");
-    round_two_dec_digits(s, average_velocity_norm_.mean_err_);
+    average_velocity_norm_         = fl::calc_average_velocity_norm(flock_.get_birds());
+
+    std::string window_string;
+    std::string average_distance;
+    std::string average_velocity;
+    std::vector<std::string> row_to_insert_into_table;
+
+    round_two_dec_digits(average_distance, average_bird_to_bird_distance_.mean_);
+    average_distance.append(" +/- ");
+    round_two_dec_digits(average_distance, average_bird_to_bird_distance_.mean_err_);
+    row_to_insert_into_table.push_back(average_distance);
+
+    window_string.append("Average bird-bird distance:     ");
+    window_string.append(average_distance);
+    window_string.append("\n");
+
+    round_two_dec_digits(average_velocity, average_velocity_norm_.mean_);
+    average_velocity.append(" +/- ");
+    round_two_dec_digits(average_velocity, average_velocity_norm_.mean_err_);
+    row_to_insert_into_table.push_back(average_velocity);
+
+    window_string.append("Average bird velocity:          ");
+    window_string.append(average_velocity);
+
+    time += delta_time_;
+    std::string total_time{std::to_string(time)};
+    row_to_insert_into_table.push_back(total_time);
+
+    text_file.insert_row_into_table(row_to_insert_into_table);
 
     // update all labels
-    set_text_settings(statistics_text, s, 20, font_, sf::Color::Black, {1020, 400});
+    set_text_settings(statistics_text, window_string, 20, font_, sf::Color::Black, {1020, 400});
     window.draw(statistics_text);
     set_text_settings(d_slider_label, std::to_string(flock_.par_.d_), 11, font_, sf::Color::Black, {1315, 15});
     window.draw(d_slider_label);

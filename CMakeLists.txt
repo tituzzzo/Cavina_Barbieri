@@ -36,7 +36,7 @@ add_test(NAME test.t COMMAND test.t)
 
 endif()
 
-add_executable(flock_simulation main.cpp bird.cpp flock.cpp vector2d.cpp)
+add_executable(flock_simulation main.cpp bird.cpp flock.cpp vector2d.cpp text_table.cpp)
 
 add_subdirectory(third_party/sfml-widgets SYSTEM)
 

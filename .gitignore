@@ -62,4 +62,5 @@ gh-md-toc
 
 # Output files
 img
+*.txt
 
