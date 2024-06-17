@@ -40,7 +40,7 @@ void table_file_management::insert_row_into_table(std::vector<std::string> const
   for (size_t i = 0; i < datas.size(); ++i) {
     file << datas[i];
     if (i != datas.size() - 1) {
-      file << "\t";
+      file << "\t\t";
     }
   }
   file << "\n";
