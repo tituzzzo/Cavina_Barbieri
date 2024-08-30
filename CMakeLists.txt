@@ -44,7 +44,7 @@ target_link_libraries(flock_simulation sfml-graphics sfml-window sfml-system sfm
 
 
 # disabilita i warning della libreria sfml-widgets
-target_compile_options(sfml-widgets PRIVATE "-w")
+target_compile_options(sfml-widgets PRIVATE -w)
 
 
 
